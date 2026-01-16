@@ -186,3 +186,25 @@ footer nav ul {
 	margin: 2em
 }
 
+.filters {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin-bottom: 50px;
+}
+
+.filters button {
+	font-family: 'Syne';
+	font-weight: 700;
+	color: #1D6154;
+	background-color: white;
+	border: 1px solid #1D6154;
+	border-radius: 60px;
+	padding: 9px 38px;
+	cursor: pointer;
+}
+
+.filters button:hover, .filters button.active {
+	background-color: #1D6154;
+	color: white;
+}
