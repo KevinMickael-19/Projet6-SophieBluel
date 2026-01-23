@@ -23,6 +23,7 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -45,6 +46,11 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
 }
 /** end reset css**/
 body {
@@ -95,7 +101,7 @@ nav li {
 	font-size: 1.2em;
 }
 
-li:hover {
+li:hover, a:hover {
 	color: #B1663C;
 }
 #introduction {
@@ -137,34 +143,34 @@ li:hover {
 	width: 100%;
 
 }
-#contact {
+#contact, #login {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
-#contact > * {
+#contact > *, #login > * {
 	text-align: center;
 
 }
-#contact h2{
+#contact h2, #login form {
 	margin-bottom: 20px;
 }
-#contact form {
+#contact form, #login form{
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input {
+#contact input, #login input {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label {
+#contact label, #login input {
 	margin: 2em 0 1em 0;
 }
-#contact textarea {
+#contact textarea, #login textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
