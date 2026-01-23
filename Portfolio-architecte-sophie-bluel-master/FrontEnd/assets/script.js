@@ -1,8 +1,10 @@
 // Récupère les travaux depuis le serveur
 
+let works = [];
+
 async function getWorks() {
     const reponse = await fetch("http://localhost:5678/api/works");
-    const works = await reponse.json();
+    works = await reponse.json();
     genererGallery(works); // On lance l'affichage
 }
 
@@ -50,6 +52,7 @@ function genererBoutons(categories) {
 
     btnTous.addEventListener("click", function() {
         console.log("Tu as cliqué sur : TOUS");
+        genererGallery(works);
     });
 
     for(let i = 0; i < categories.length; i++) {
@@ -59,7 +62,23 @@ function genererBoutons(categories) {
         zoneFiltres.appendChild(btn);
 
         btn.addEventListener("click", function() {
-            console.log("Tu as cliqué sur : " + category.name);
+            console.log("J'ai cliqué sur :", category.name);
+            console.log("ID de la catégorie demandée :", category.id);
+            
+            const worksFiltres = works.filter(function(work) {
+                console.log("Je compare avec le projet :", work.title, "qui a l'ID catégorie :", work.categoryId);
+                return work.categoryId === category.id;
+            });
+
+            console.log("Nombre de projets trouvés :", worksFiltres.length);
+            genererGallery(worksFiltres);
+        });
+
+        btn.addEventListener("click", function() {
+            const worksFiltres = works.filter(function(work) {
+            return work.categoryId === category.id;
+            });
+            genererGallery(worksFiltres);
         });
     }
 }
