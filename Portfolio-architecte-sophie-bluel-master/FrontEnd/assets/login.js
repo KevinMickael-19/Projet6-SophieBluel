@@ -3,7 +3,7 @@ const form = document.querySelector("form");
 
 // 2. On écoute quand on clique sur "Se connecter"
 form.addEventListener("submit", async function(event) {
-    // On empêche la page de se recharger (sinon on perd tout)
+    // On empêche la page de se recharger
     event.preventDefault();
 
     // 3. On récupère ce que l'utilisateur a écrit

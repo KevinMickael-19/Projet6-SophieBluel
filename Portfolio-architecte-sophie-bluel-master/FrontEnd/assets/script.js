@@ -84,3 +84,50 @@ function genererBoutons(categories) {
 }
 getCategories();
 getWorks();
+
+// On récupère le token
+const token = localStorage.getItem("token");
+
+// SI ON EST CONNECTÉ (Token présent)
+if (token) {
+    
+    // 1. Création de la barre noire
+    const topBar = document.createElement("div");
+    topBar.classList.add("edition-mode-banner"); // On ajoute la classe CSS
+    topBar.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Mode édition';
+    document.body.prepend(topBar);
+
+    // 2. Décalage du header (pour pas qu'il soit sous la barre)
+    const header = document.querySelector("header");
+    if (header) {
+        header.classList.add("header-decale");
+    }
+
+    // 3. Changement Login -> Logout
+    const loginLink = document.querySelector("nav ul li a[href='login.html']");
+    if (loginLink) {
+        loginLink.innerText = "logout";
+        loginLink.href = "#";
+        // Clic sur logout = déconnexion
+        loginLink.addEventListener("click", () => {
+            localStorage.removeItem("token");
+            window.location.reload();
+        });
+    }
+
+    // 4. Cacher les filtres
+    const filters = document.querySelector(".filters");
+    if (filters) {
+        filters.classList.add("hidden"); // On ajoute la classe qui cache
+    }
+
+    // 5. Ajout du bouton "Modifier" à côté de "Mes Projets"
+    const titleProjects = document.querySelector("#portfolio h2");
+    if (titleProjects) {
+        const editLink = document.createElement("a");
+        editLink.href = "#";
+        editLink.classList.add("edit-btn"); // On ajoute la classe CSS
+        editLink.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> modifier';
+        titleProjects.appendChild(editLink);
+    }
+}
