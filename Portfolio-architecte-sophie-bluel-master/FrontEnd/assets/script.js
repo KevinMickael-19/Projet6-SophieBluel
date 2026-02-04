@@ -143,54 +143,8 @@ if (token) {
         genererGalerieModale(works);
     });
 
-    // Fonction pour générer la galerie dans la modale
-function genererGalerieModale(projets) {
-    const modalGallery = document.querySelector(".modal-gallery");
-    modalGallery.innerHTML = ""; // On vide la galerie
-
-    for (let i = 0; i < projets.length; i++) {
-        const projet = projets[i];
-
-        // 1. Création de la balise figure
-        const figure = document.createElement("figure");
-        figure.style.position = "relative";
-
-        // 2. Création de l'image
-        const image = document.createElement("img");
-        image.src = projet.imageUrl;
-        image.alt = projet.title;
-        image.style.width = "78px";
-
-        // 3. Création de l'icône poubelle
-        const trashIcon = document.createElement("i");
-        trashIcon.classList.add("fa-solid", "fa-trash-can", "trash-icon");
-        trashIcon.id = projet.id; // Important pour la suppression future
-
-        // 4. Assemblage (Juste l'image et l'icône)
-        figure.appendChild(image);
-        figure.appendChild(trashIcon);
-        modalGallery.appendChild(figure);
-    }
-}
-
-    // 2. FERMER LA MODALE : Au clic sur la croix
-    closeModalBtn.addEventListener("click", function(event) {
-        event.preventDefault();
-        modal.classList.remove("modal-show"); // On retire la classe
-    });
-
-    // 3. FERMER LA MODALE : Au clic sur le fond gris
-    modal.addEventListener("click", function(event) {
-        // Si on clique précisément sur le fond gris (modal) et pas sur la boîte blanche
-        if (event.target === modal) {
-            modal.classList.remove("modal-show");
-        }
-    });
-
-    }  
-}
-
 // Fonction pour générer la galerie dans la modale
+
 function genererGalerieModale(liste) {
     const modalGallery = document.querySelector(".modal-gallery");
     modalGallery.innerHTML = ""; // On vide la galerie
@@ -209,13 +163,20 @@ function genererGalerieModale(liste) {
         image.style.width = "78px";
 
         // 3. Création de l'icône poubelle
-        const trashIcon = document.createElement("i");
-        trashIcon.classList.add("fa-solid", "fa-trash-can", "trash-icon");
-        trashIcon.id = projet.id; // Important pour la suppression future
 
-        trashIcon.addEventListener("click" , async function (event) {
+        const deleteBtn =document.createElement("button");
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.id = liste[i].id;
+
+        const trashIcon = document.createElement("i");
+        trashIcon.classList.add("fa-solid", "fa-trash-can");
+        deleteBtn.appendChild(trashIcon);
+
+        deleteBtn.addEventListener("click" , async function (event) {
             event.preventDefault();
-            
+
+            console.log("Clic sur la poubelle ID:" , deleteBtn.id);
+
             //Confirmation de la suppression
 
             const confirmation = confirm("Voulez-vous vraiment supprimer ce projet ?")
@@ -223,8 +184,8 @@ function genererGalerieModale(liste) {
                 return;
             }
 
-            const id = trashIcon.id;
-            const token = localStorage.geitItem("token");
+            const id = deleteBtn.id;
+            const token = localStorage.getItem("token");
 
             // Demande de suppression à l' API
             const response = await fetch(`http://localhost:5678/api/works/${id}`, {
@@ -244,9 +205,27 @@ function genererGalerieModale(liste) {
 
         // 4. Assemblage (Juste l'image et l'icône)
         figure.appendChild(image);
-        figure.appendChild(trashIcon);
+        figure.appendChild(deleteBtn);
         modalGallery.appendChild(figure);
     }
 }
+
+// 2. FERMER LA MODALE : Au clic sur la croix
+    closeModalBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+        modal.classList.remove("modal-show"); // On retire la classe
+    });
+
+    // 3. FERMER LA MODALE : Au clic sur le fond gris
+    modal.addEventListener("click", function(event) {
+        // Si on clique précisément sur le fond gris (modal) et pas sur la boîte blanche
+        if (event.target === modal) {
+            modal.classList.remove("modal-show");
+        }
+    });
+
+    }  
+}
+
 
 

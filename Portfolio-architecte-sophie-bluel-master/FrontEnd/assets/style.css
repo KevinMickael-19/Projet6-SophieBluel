@@ -346,18 +346,33 @@ footer nav ul {
 }
 
 /* Icône poubelle */
-.trash-icon {
+
+.delete-btn {
     position: absolute;
     top: 6px;
     right: 6px;
     background-color: black;
     color: white;
-    width: 17px;
-    height: 17px;
+    width: 20px;
+    height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 2px;
+    border-radius: 4px;
     font-size: 9px;
     cursor: pointer;
+	z-index: 1000;
+
 }
+
+.delete-btn i {
+
+	font-size: 14px;
+	pointer-events: none;
+}
+
+/* figure,
+figure img {
+
+	pointer-events: none;
+} */
