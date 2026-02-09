@@ -292,7 +292,7 @@ footer nav ul {
     font-size: 20px;
 }
 
-#titlemodal {
+#titlemodal, #titlemodal-add {
     font-family: 'Work Sans';
     font-size: 26px;
     color: black;
@@ -300,7 +300,12 @@ footer nav ul {
     margin-bottom: 40px;
 }
 
-.btn-valider {
+#titlemodal-add {
+
+	text-align: center;
+}
+
+.btn-valider, .btn-add-photo {
     font-family: 'Syne';
     font-weight: 700;
     color: white;
@@ -371,8 +376,135 @@ footer nav ul {
 	pointer-events: none;
 }
 
-/* figure,
-figure img {
+.btn-add-photo {
 
-	pointer-events: none;
-} */
+	display: block;
+	margin: 0 auto;
+}
+
+/* --- GESTION DES VUES (État) --- */
+.modal-view-hidden {
+    display: none;
+}
+
+/* --- NAVIGATION & ICÔNES --- */
+/* On retire les styles par défaut des boutons pour ne garder que l'icône */
+.modal-icon-close, .modal-icon-back {
+    position: absolute;
+    top: 30px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.modal-icon-close {
+    right: 30px;
+}
+
+.modal-icon-back {
+    left: 30px; /* Place la flèche correctement à gauche */
+}
+
+/* --- FORMULAIRE D'AJOUT --- */
+.modal-form {
+    width: 420px;
+    margin: 0 auto; 
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* Input File caché proprement */
+.form-image-input {
+    display: none; 
+}
+
+/* Zone Photo (Carré Bleu) */
+.form-group-photo {
+    background-color: #E8F1F6;
+    height: 169px;
+    width: 100%;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.form-icon-image {
+    font-size: 58px;
+    color: #B9C5CC;
+    margin-bottom: 10px;
+}
+
+.btn-add-file {
+    background-color: #CBD6DC;
+    color: #306685;
+    border-radius: 50px;
+    padding: 10px 33px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.form-info-text {
+    font-size: 10px;
+    color: #444;
+}
+
+/* Image Prévisualisation */
+#preview-img {
+    display: none; /* Cachée par défaut via CSS */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #E8F1F6;
+    z-index: 10;
+}
+
+/* Inputs Standards */
+.form-label {
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.form-input {
+    height: 51px;
+    width: 100%;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    margin-bottom: 20px;
+    padding-left: 20px;
+    box-sizing: border-box;
+}
+
+.btn-submit {
+    width: 237px;
+    align-self: center;
+    margin-top: 30px;
+}
+
+.preview-visible {
+	display: block !important;
+}
+
+/* État actif du bouton de validation (quand le formulaire est complet) */
+.btn-submit-active {
+    background-color: #1D6154 !important; /* Vert foncé */
+    cursor: pointer;
+    opacity: 1;
+}
+
+/* État désactivé (Rappel ou ajustement si nécessaire) */
+.btn-submit:disabled {
+    background-color: #A7A7A7;
+    cursor: not-allowed;
+}

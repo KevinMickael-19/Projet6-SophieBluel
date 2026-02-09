@@ -18,6 +18,7 @@ function genererGallery(works) {
         const work = works[i];
         
         const figure = document.createElement("figure");
+        figure.dataset.id = work.id;
         const img = document.createElement("img");
         img.src = work.imageUrl;
         img.alt = work.title;
@@ -179,7 +180,7 @@ function genererGalerieModale(liste) {
 
             //Confirmation de la suppression
 
-            const confirmation = confirm("Voulez-vous vraiment supprimer ce projet ?")
+            const confirmation = confirm(`Voulez-vous vraiment supprimer le projet "${projet.title}" ? `)
             if (!confirmation){
                 return;
             }
@@ -198,6 +199,11 @@ function genererGalerieModale(liste) {
 
             if(response.ok) {
                 figure.remove();
+                const elementPrincipal = document.querySelector(`.gallery figure[data-id="${id}"]`);
+                if (elementPrincipal) {
+                    elementPrincipal.remove(); //suppression du DOM
+                }
+                works = works.filter(work=> work.id !=id);
             } else {
                 alert ("Erreur lors de la suppression");
             }
