@@ -141,6 +141,8 @@ li:hover, a:hover {
 
 .gallery img {
 	width: 100%;
+    height: 100%;
+    object-fit: cover;
 
 }
 #contact, #login {
@@ -346,7 +348,8 @@ footer nav ul {
 
 .modal-gallery img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
 	
 }
 
@@ -468,6 +471,7 @@ footer nav ul {
     object-fit: contain;
     background-color: #E8F1F6;
     z-index: 10;
+    cursor: pointer;
 }
 
 /* Inputs Standards */
@@ -507,4 +511,13 @@ footer nav ul {
 .btn-submit:disabled {
     background-color: #A7A7A7;
     cursor: not-allowed;
+}
+
+#error-message {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: #FF4D4D; /* Rouge alerte */
+    height: 20px;   /* Hauteur fixe pour éviter le layout shift */
 }
