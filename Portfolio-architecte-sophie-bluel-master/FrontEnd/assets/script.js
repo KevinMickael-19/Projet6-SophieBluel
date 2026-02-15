@@ -362,8 +362,8 @@ function initPhotoPreview() {
   if (!fileInput || !previewImg) return;
   // Clic sur le preview pour changer la photo
   previewImg.addEventListener("click", () => {
-        fileInput.click();
-    });
+    fileInput.click();
+  });
 
   // Écoute de l'événement de changement sur le champ fichier
   fileInput.addEventListener("change", (event) => {
@@ -403,47 +403,55 @@ initPhotoPreview();
  * Gère l'état du bouton de soumission (disabled/enabled) et le feedback visuel (messages d'erreur).
  */
 function checkFormValidity() {
-    const titleInput = document.getElementById("title");
-    const categorySelect = document.getElementById("category");
-    const fileInput = document.getElementById("file");
-    const submitBtn = document.querySelector(".btn-submit");
-    const errorMessage = document.getElementById("error-message");
+  const titleInput = document.getElementById("title");
+  const categorySelect = document.getElementById("category");
+  const fileInput = document.getElementById("file");
+  const submitBtn = document.querySelector(".btn-submit");
+  const errorMessage = document.getElementById("error-message");
 
-    // Guard clause : arrêt si les éléments du DOM sont introuvables
-    if (!titleInput || !categorySelect || !fileInput || !submitBtn || !errorMessage) return;
+  // Guard clause : arrêt si les éléments du DOM sont introuvables
+  if (
+    !titleInput ||
+    !categorySelect ||
+    !fileInput ||
+    !submitBtn ||
+    !errorMessage
+  )
+    return;
 
-    // Fonction de mise à jour de l'interface utilisateur
-    const updateUI = () => {
-        const isTitleValid = titleInput.value.trim() !== "";
-        const isCategoryValid = categorySelect.value !== "";
-        const isFileValid = fileInput.files.length > 0;
-        const isFormValid = isTitleValid && isCategoryValid && isFileValid;
+  // Fonction de mise à jour de l'interface utilisateur
+  const updateUI = () => {
+    const isTitleValid = titleInput.value.trim() !== "";
+    const isCategoryValid = categorySelect.value !== "";
+    const isFileValid = fileInput.files.length > 0;
+    const isFormValid = isTitleValid && isCategoryValid && isFileValid;
 
-        // Bascule de l'état du bouton submit
-        submitBtn.disabled = !isFormValid;
-        isFormValid ? submitBtn.classList.add("btn-submit-active") : submitBtn.classList.remove("btn-submit-active");
+    // Bascule de l'état du bouton submit
+    submitBtn.disabled = !isFormValid;
+    isFormValid
+      ? submitBtn.classList.add("btn-submit-active")
+      : submitBtn.classList.remove("btn-submit-active");
 
-        // Gestion des messages d'erreur (Priorité : Fichier > Titre > Catégorie)
-        if (isFormValid) {
-            errorMessage.textContent = "";
-        } else if (!isFileValid) {
-            errorMessage.textContent = "Image requise.";
-        } else if (!isTitleValid) {
-            errorMessage.textContent = "Titre requis.";
-        } else if (!isCategoryValid) {
-            errorMessage.textContent = "Catégorie requise.";
-        }
-    };
+    // Gestion des messages d'erreur (Priorité : Fichier > Titre > Catégorie)
+    if (isFormValid) {
+      errorMessage.textContent = "";
+    } else if (!isFileValid) {
+      errorMessage.textContent = "Image requise.";
+    } else if (!isTitleValid) {
+      errorMessage.textContent = "Titre requis.";
+    } else if (!isCategoryValid) {
+      errorMessage.textContent = "Catégorie requise.";
+    }
+  };
 
-    // Attachement des écouteurs d'événements pour une validation en temps réel
-    titleInput.addEventListener("input", updateUI);
-    categorySelect.addEventListener("change", updateUI);
-    fileInput.addEventListener("change", updateUI);
+  // Attachement des écouteurs d'événements pour une validation en temps réel
+  titleInput.addEventListener("input", updateUI);
+  categorySelect.addEventListener("change", updateUI);
+  fileInput.addEventListener("change", updateUI);
 }
 
 // Initialisation au chargement
 checkFormValidity();
-
 
 /**
  * TRAITEMENT DU TÉLÉVERSEMENT (UPLOAD)
@@ -485,23 +493,90 @@ async function processUpload() {
 
       // Traitement de la réponse serveur
       if (response.ok) {
-        alert("Projet ajouté avec succès");
+        // --- REMPLACEMENT DU BLOC LIGNES 487-504 ---
 
-        // --- RÉINITIALISATION DE L'INTERFACE ---
+        // 1. On récupère les infos du projet créé par l'API (ID, url, titre...)
+        const newWork = await response.json();
 
-        // 1. Vidage des champs textes
-        form.reset();
+        // 2. AJOUT DANS LA GALERIE PRINCIPALE (Page d'accueil)
+        const mainGallery = document.querySelector(".gallery");
+        if (mainGallery) {
+          const figure = document.createElement("figure");
+          figure.dataset.id = newWork.id; // Important pour pouvoir le supprimer plus tard
 
-        // 2. Masquage de l'aperçu image (Suppression de la classe d'état)
-        previewImg.src = "";
-        previewImg.classList.remove("preview-visible");
+          const img = document.createElement("img");
+          img.src = newWork.imageUrl;
+          img.alt = newWork.title;
 
-        // 3. Désactivation du bouton de validation
+          const caption = document.createElement("figcaption");
+          caption.innerText = newWork.title;
+
+          figure.appendChild(img);
+          figure.appendChild(caption);
+          mainGallery.appendChild(figure);
+        }
+
+        // 3. AJOUT DANS LA MODALE (Vue suppression)
+        const modalGallery = document.querySelector(".modal-gallery");
+        if (modalGallery) {
+          const figure = document.createElement("figure");
+          figure.dataset.id = newWork.id;
+          figure.style.position = "relative"; // Pour placer l'icône
+
+          const img = document.createElement("img");
+          img.src = newWork.imageUrl;
+          img.alt = newWork.title;
+          img.style.width = "78px";
+
+          // Création du bouton poubelle pour le projet créé
+          const trashBtn = document.createElement("button");
+          trashBtn.className = "delete-btn";
+          trashBtn.id = newWork.id;
+          trashBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+
+          // Permet de rendre la poubelle active sans avoir à recharger la page
+          trashBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            if (confirm("Voulez-vous supprimer ce projet ?")) {
+              await fetch(`http://localhost:5678/api/works/${newWork.id}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${token}` },
+              });
+              // Suppression visuelle immédiate
+              figure.remove(); // Modale
+              const mainFig = document.querySelector(
+                `.gallery figure[data-id="${newWork.id}"]`,
+              );
+              if (mainFig) mainFig.remove(); // Galerie
+            }
+          });
+
+          figure.appendChild(img);
+          figure.appendChild(trashBtn);
+          modalGallery.appendChild(figure);
+        }
+
+        // 4. RESET DE L'INTERFACE
+        form.reset(); // Vide les champs texte
+        previewImg.src = ""; // Vide l'image
+        previewImg.style.display = "none"; // Cache la balise img si nécessaire
+        // Si tu as une classe spécifique pour cacher/montrer la preview :
+        if (previewImg.classList.contains("preview-visible")) {
+          previewImg.classList.remove("preview-visible");
+        }
+
+        // Remet le bouton Valider en gris
         submitBtn.classList.remove("btn-submit-active");
         submitBtn.disabled = true;
 
-        // 4. Actualisation de la galerie (Appel fonction externe si existante)
-        // loadWorks();
+        // Ferme la modale
+        const modal = document.getElementById("modal");
+        /*  modal.classList.remove("modal-show"); */
+
+        // Revient sur la vue "Galerie" pour la prochaine ouverture
+        if (typeof resetModalState === "function") {
+          resetModalState();
+        }
       } else {
         // Gestion des erreurs de validation API
         console.error("Échec de l'upload");
