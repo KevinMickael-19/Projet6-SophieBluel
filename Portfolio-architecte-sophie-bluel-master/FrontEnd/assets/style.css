@@ -521,3 +521,8 @@ footer nav ul {
     color: #FF4D4D; /* Rouge alerte */
     height: 20px;   /* Hauteur fixe pour éviter le layout shift */
 }
+
+.filters button.active {
+    background-color: #1D6154;
+    color: white;
+}

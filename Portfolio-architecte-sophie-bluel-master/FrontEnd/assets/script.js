@@ -1,11 +1,20 @@
-// Récupère les travaux depuis le serveur
-
+// Déclaration de l'URL de base
+const API_BASE_URL = "http://localhost:5678/api";
+// Variable globale pour stocker les travaux
 let works = [];
 
+// Récupération des travaux depuis l'API et lancement de l'affichage
 async function getWorks() {
-  const reponse = await fetch("http://localhost:5678/api/works");
-  works = await reponse.json();
-  genererGallery(works); // On lance l'affichage
+  try {
+    const reponse = await fetch(`${API_BASE_URL}/works`);
+    if (!reponse.ok) {
+      throw new Error(`${API_BASE_URL}/works`);
+    }
+    works = await reponse.json();
+    genererGallery(works); // On lance l'affichage
+  } catch (error) {
+    console.error("Erreur lors du chargement des projets: ", error);
+  }
 }
 
 // Affiche les travaux dans la galerie
@@ -14,9 +23,9 @@ function genererGallery(works) {
   const sectionGallery = document.querySelector(".gallery");
   sectionGallery.innerHTML = "";
 
-  for (let i = 0; i < works.length; i++) {
-    const work = works[i];
+  const fragment = document.createDocumentFragment();
 
+  works.forEach((work) => {
     const figure = document.createElement("figure");
     figure.dataset.id = work.id;
     const img = document.createElement("img");
@@ -24,62 +33,64 @@ function genererGallery(works) {
     img.alt = work.title;
 
     const figcaption = document.createElement("figcaption");
-    figcaption.innerText = work.title;
+    figcaption.textContent = work.title;
 
-    figure.appendChild(img);
-    figure.appendChild(figcaption);
-    sectionGallery.appendChild(figure);
-  }
+    figure.append(img, figcaption);
+    fragment.appendChild(figure);
+  });
+  sectionGallery.appendChild(fragment);
 }
 
-console.log("LE SCRIPT EST CHARGE");
-
 async function getCategories() {
-  const reponse = await fetch("http://localhost:5678/api/categories");
+  try {
+    const reponse = await fetch(`${API_BASE_URL}/categories`);
+    if (!reponse.ok) {
+      throw new Error("Erreur API works");
+    }
 
-  const categories = await reponse.json();
-
-  genererBoutons(categories);
+    const categories = await reponse.json();
+    genererBoutons(categories);
+  } catch (error) {
+    console.error("Erreur lors du chargement des projets :", error);
+  }
 }
 
 function genererBoutons(categories) {
   const zoneFiltres = document.querySelector(".filters");
 
   const btnTous = document.createElement("button");
-  btnTous.innerText = "Tous";
+  btnTous.textContent = "Tous";
+  btnTous.classList.add("active");
   zoneFiltres.appendChild(btnTous);
 
   btnTous.addEventListener("click", function () {
-    console.log("Tu as cliqué sur : TOUS");
     genererGallery(works);
+
+    document
+      .querySelectorAll(".filters button")
+      .forEach((btn) => btn.classList.remove("active"));
+    btnTous.classList.add("active");
   });
 
-  for (let i = 0; i < categories.length; i++) {
-    const category = categories[i];
+  categories.forEach((category) => {
     const btn = document.createElement("button");
-    btn.innerText = category.name;
+    btn.textContent = category.name;
     zoneFiltres.appendChild(btn);
 
     btn.addEventListener("click", function () {
-      console.log("J'ai cliqué sur :", category.name);
-      console.log("ID de la catégorie demandée :", category.id);
-
       const worksFiltres = works.filter(function (work) {
-        console.log(
-          "Je compare avec le projet :",
-          work.title,
-          "qui a l'ID catégorie :",
-          work.categoryId,
-        );
         return work.categoryId === category.id;
       });
-
-      console.log("Nombre de projets trouvés :", worksFiltres.length);
       genererGallery(worksFiltres);
+
+      // Gestion de la classe active
+      document
+        .querySelectorAll(".filters button")
+        .forEach((btn) => btn.classList.remove("active"));
+      btn.classList.add("active");
     });
-  }
+  });
 }
+
 getCategories();
 getWorks();
-
-
