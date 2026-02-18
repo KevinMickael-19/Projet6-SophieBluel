@@ -262,50 +262,49 @@ fillCategorySelect();
 // GESTION DE LA PRÉVISUALISATION DE LA PHOTO
 
 function initPhotoPreview() {
-  // Sélection des éléments du DOM
   const fileInput = document.getElementById("file");
   const previewImg = document.getElementById("preview-img");
-  const iconLabelContainer = document.querySelector(".form-group-photo"); // Optionnel : pour masquer les icônes derrière si besoin
+  const removeBtn = document.getElementById("remove-photo-btn");
+  const photoContainer = document.querySelector(".form-group-photo");
 
-  // Vérification de l'existence des éléments
-  if (!fileInput || !previewImg) return;
-  // Clic sur le preview pour changer la photo
-  previewImg.addEventListener("click", () => {
-    fileInput.click();
-  });
+  if (!fileInput || !previewImg || !removeBtn || !photoContainer) return;
 
-  // Écoute de l'événement de changement sur le champ fichier
-  fileInput.addEventListener("change", (event) => {
-    const file = event.target.files[0];
-    const maxFileSize = 4 * 1024 * 1024; // 4Mo en octets
+  const MAX_SIZE = 4 * 1024 * 1024;
 
-    // Validation de l'existence du fichier
-    if (file) {
-      // Validation de la taille du fichier (Optionnel mais recommandé)
-      if (file.size > maxFileSize) {
-        alert("Le fichier est trop volumineux (max 4mo)");
-        fileInput.value = ""; // Réinitialisation de l'input
-        return;
-      }
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (!file) return;
 
-      // Instanciation du lecteur de fichier
-      const reader = new FileReader();
-
-      // Définition de la callback lors du chargement complet
-      reader.onload = (e) => {
-        // Attribution de la source de l'image
-        previewImg.src = e.target.result;
-
-        // Modification de la visibilité via la classe CSS
-        previewImg.classList.add("preview-visible");
-      };
-
-      // Lecture du fichier en tant qu'URL de données
-      reader.readAsDataURL(file);
+    if (file.size > MAX_SIZE) {
+      alert("Fichier trop volumineux (max 4Mo)");
+      resetPreview();
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      previewImg.src = reader.result;
+      previewImg.classList.add("preview-visible");
+      removeBtn.style.display = "block";
+    };
+    reader.readAsDataURL(file);
   });
+
+  removeBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // 🔥 empêche la remontée vers le container
+    resetPreview();
+  });
+
+  function resetPreview() {
+    fileInput.value = "";
+    previewImg.src = "";
+    previewImg.classList.remove("preview-visible");
+    removeBtn.style.display = "none";
+  }
 }
+
 initPhotoPreview();
+
 
 /**
  * Vérifie la validité des champs du formulaire d'ajout.
@@ -446,7 +445,9 @@ async function processUpload() {
           // Permet de rendre la poubelle active sans avoir à recharger la page
           trashBtn.addEventListener("click", async (e) => {
             e.preventDefault();
-            if (confirm(`Voulez-vous supprimer le projet "${newWork.title} ?`)) {
+            if (
+              confirm(`Voulez-vous supprimer le projet "${newWork.title} ?`)
+            ) {
               await fetch(`http://localhost:5678/api/works/${newWork.id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },

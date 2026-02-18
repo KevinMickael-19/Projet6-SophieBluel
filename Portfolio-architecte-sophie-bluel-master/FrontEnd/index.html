@@ -78,62 +78,66 @@
 	</footer>
 
 	<aside id="modal" class="modal" aria-hidden="true" role="dialog">
-    <div class="modal-wrapper js-modal-stop">
-        
-        <div id="modal-gallery-view" class="modal-view">
-            <button class="modal-icon-close js-close-modal">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            
-            <h3 id="titlemodal">Galerie photo</h3>
-            
-            <div class="modal-gallery">
-                </div>
-            
-            <hr class="modal-line">
-            <button class="btn-valider btn-add-photo">Ajouter une photo</button>
-        </div>
+		<div class="modal-wrapper js-modal-stop">
 
-        <div id="modal-add-view" class="modal-view modal-view-hidden">
-            
-            <button class="modal-icon-back">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button>
-            <button class="modal-icon-close js-close-modal">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+			<div id="modal-gallery-view" class="modal-view">
+				<button class="modal-icon-close js-close-modal">
+					<i class="fa-solid fa-xmark"></i>
+				</button>
 
-            <h3 id="titlemodal-add">Ajout photo</h3>
+				<h3 id="titlemodal">Galerie photo</h3>
 
-            <div class="modal-add-content">
-                <form id="add-photo-form" class="modal-form">
-                    
-                    <div class="form-group-photo">
-                        <i class="fa-regular fa-image form-icon-image"></i>
-                        
-                        <label for="file" class="btn-add-file">+ Ajouter photo</label>
-                        <input type="file" name="image" id="file" accept="image/png, image/jpeg" class="form-image-input">
-                        
-                        <p class="form-info-text">jpg, png : 4mo max</p>
-                        <img id="preview-img" src="#" alt="Aperçu de l'image">
-                    </div>
+				<div class="modal-gallery">
+				</div>
 
-                    <label for="title" class="form-label">Titre</label>
-                    <input type="text" name="title" id="title" class="form-input">
+				<hr class="modal-line">
+				<button class="btn-valider btn-add-photo">Ajouter une photo</button>
+			</div>
 
-                    <label for="category" class="form-label">Catégorie</label>
-                    <select name="category" id="category" class="form-input">
-                        <option value="" disabled selected></option>
-                    </select>
+			<div id="modal-add-view" class="modal-view modal-view-hidden">
 
-                    <hr class="modal-line">
-					<p id="error-message"></p>
-                    <button type="submit" class="btn-valider btn-submit" disabled>Valider</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</aside>
+				<button class="modal-icon-back">
+					<i class="fa-solid fa-arrow-left"></i>
+				</button>
+				<button class="modal-icon-close js-close-modal">
+					<i class="fa-solid fa-xmark"></i>
+				</button>
+
+				<h3 id="titlemodal-add">Ajout photo</h3>
+
+				<div class="modal-add-content">
+					<form id="add-photo-form" class="modal-form">
+
+						<div class="form-group-photo">
+							<i class="fa-regular fa-image form-icon-image"></i>
+
+							<label for="file" class="btn-add-file">+ Ajouter photo</label>
+							<input type="file" name="image" id="file" accept="image/png, image/jpeg"
+								class="form-image-input">
+
+							<p class="form-info-text">jpg, png : 4mo max</p>
+							<img id="preview-img" src="#" alt="Aperçu de l'image">
+							<button type="button" id="remove-photo-btn" class="delete-photo-btn">
+								<i class="fa-solid fa-xmark"></i>
+							</button>
+						</div>
+
+						<label for="title" class="form-label">Titre</label>
+						<input type="text" name="title" id="title" class="form-input">
+
+						<label for="category" class="form-label">Catégorie</label>
+						<select name="category" id="category" class="form-input">
+							<option value="" disabled selected></option>
+						</select>
+
+						<hr class="modal-line">
+						<p id="error-message"></p>
+						<button type="submit" class="btn-valider btn-submit" disabled>Valider</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</aside>
 	<script src="/assets/script.js"></script>
 	<script src="/assets/edition.js"></script>
 </body>

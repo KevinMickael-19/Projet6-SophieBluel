@@ -437,6 +437,7 @@ footer nav ul {
     margin-bottom: 30px;
     position: relative;
     overflow: hidden;
+    position: relative;
 }
 
 .form-icon-image {
@@ -488,6 +489,8 @@ footer nav ul {
     margin-bottom: 20px;
     padding-left: 20px;
     box-sizing: border-box;
+    font-family: 'Work sans';
+    font-weight: 500;
 }
 
 .btn-submit {
@@ -525,4 +528,23 @@ footer nav ul {
 .filters button.active {
     background-color: #1D6154;
     color: white;
+}
+
+.delete-photo-btn {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    color: black;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+
+.preview-visible + .delete-photo-btn {
+
+    display: block;
 }
