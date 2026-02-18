@@ -193,6 +193,7 @@ function openAddPhotoView() {
 function openGalleryView() {
   addPhotoView.classList.add("modal-view-hidden");
   galleryView.classList.remove("modal-view-hidden");
+  resetAddPhotoForm();
 }
 
 /**
@@ -201,6 +202,7 @@ function openGalleryView() {
  */
 function resetModalState() {
   openGalleryView();
+  resetAddPhotoForm();
   // TODO: Réinitialiser les champs du formulaire ici ultérieurement
 }
 
@@ -305,6 +307,25 @@ function initPhotoPreview() {
 
 initPhotoPreview();
 
+function resetAddPhotoForm() {
+  const fileInput = document.getElementById("file");
+  const previewImg = document.getElementById("preview-img");
+  const removeBtn = document.getElementById("remove-photo-btn");
+  const form = document.getElementById("add-photo-form");
+
+  if (form) form.reset();
+
+  if (fileInput) fileInput.value = "";
+
+  if (previewImg) {
+    previewImg.classList.remove("preview-visible");
+    previewImg.removeAttribute("src");
+  }
+
+  if (removeBtn) {
+    removeBtn.style.display = "none";
+  }
+}
 
 /**
  * Vérifie la validité des champs du formulaire d'ajout.
@@ -361,10 +382,9 @@ function checkFormValidity() {
 // Initialisation au chargement
 checkFormValidity();
 
-/**
- * TRAITEMENT DU TÉLÉVERSEMENT (UPLOAD)
- * Gestion de l'envoi du nouveau projet vers l'API.
- */
+// TRAITEMENT DU TÉLÉVERSEMENT (UPLOAD)
+// Gestion de l'envoi du nouveau projet vers l'API.
+
 async function processUpload() {
   // Sélection des éléments DOM
   const form = document.getElementById("add-photo-form");
@@ -469,7 +489,7 @@ async function processUpload() {
         // 4. RESET DE L'INTERFACE
         form.reset(); // Vide les champs texte
         previewImg.src = ""; // Vide l'image
-        previewImg.style.display = "none"; // Cache la balise img si nécessaire
+        previewImg.classList.remove("preview-visible");
         // Si tu as une classe spécifique pour cacher/montrer la preview :
         if (previewImg.classList.contains("preview-visible")) {
           previewImg.classList.remove("preview-visible");

@@ -462,8 +462,9 @@ footer nav ul {
 }
 
 /* Image Prévisualisation */
+
 #preview-img {
-    display: none; /* Cachée par défaut via CSS */
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
@@ -473,6 +474,11 @@ footer nav ul {
     background-color: #E8F1F6;
     z-index: 10;
     cursor: pointer;
+}
+
+#preview-img.preview-visible {
+
+    display: block;
 }
 
 /* Inputs Standards */
