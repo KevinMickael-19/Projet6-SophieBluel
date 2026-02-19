@@ -45,7 +45,7 @@ async function getCategories() {
   try {
     const reponse = await fetch(`${API_BASE_URL}/categories`);
     if (!reponse.ok) {
-      throw new Error("Erreur API works");
+      throw new Error("Erreur API categories");
     }
 
     const categories = await reponse.json();
@@ -56,7 +56,9 @@ async function getCategories() {
 }
 
 function genererBoutons(categories) {
+
   const zoneFiltres = document.querySelector(".filters");
+  zoneFiltres.innerHTML = "";
 
   const btnTous = document.createElement("button");
   btnTous.textContent = "Tous";

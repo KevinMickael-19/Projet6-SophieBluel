@@ -21,6 +21,7 @@ if (token) {
   if (loginLink) {
     loginLink.innerText = "logout";
     loginLink.href = "#";
+    
     // Clic sur logout = déconnexion
     loginLink.addEventListener("click", () => {
       localStorage.removeItem("token");
@@ -167,39 +168,34 @@ if (token) {
   }
 }
 
-/**
- * GESTION DE LA NAVIGATION DE LA MODALE
- * Gère le basculement entre la vue "Galerie" et la vue "Ajout photo".
- */
-
+// GESTION DE LA NAVIGATION DE LA MODALE
+// Gère le basculement entre la vue "Galerie" et la vue "Ajout photo"
 // Sélection des éléments du DOM
+
 const btnAddPhoto = document.querySelector(".btn-add-photo");
 const arrowReturn = document.querySelector(".modal-icon-back");
 const galleryView = document.getElementById("modal-gallery-view");
 const addPhotoView = document.getElementById("modal-add-view");
 const modalOverlay = document.getElementById("modal");
 
-/**
- * Affiche la vue d'ajout de photo et masque la galerie.
- */
+// Affiche la vue d'ajout de photo et masque la galerie.
+
 function openAddPhotoView() {
   galleryView.classList.add("modal-view-hidden");
   addPhotoView.classList.remove("modal-view-hidden");
 }
 
-/**
- * Affiche la vue galerie et masque le formulaire d'ajout.
- */
+// Affiche la vue galerie et masque le formulaire d'ajout
+
 function openGalleryView() {
   addPhotoView.classList.add("modal-view-hidden");
   galleryView.classList.remove("modal-view-hidden");
   resetAddPhotoForm();
 }
 
-/**
- * Réinitialise l'état de la modale vers la vue par défaut (Galerie).
- * Utilisé lors de la fermeture de la modale pour garantir un état propre à la réouverture.
- */
+// Réinitialise l'état de la modale vers la vue par défaut (Galerie).
+// Utilisé lors de la fermeture de la modale pour garantir un état propre à la réouverture.
+
 function resetModalState() {
   openGalleryView();
   resetAddPhotoForm();

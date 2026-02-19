@@ -1,44 +1,45 @@
 // Récupération du formulaire
-const form = document.querySelector("form");
+const form = document.getElementById("login-form");
 
 // 2. On écoute quand on clique sur "Se connecter"
-form.addEventListener("submit", async function(event) {
-    // On empêche la page de se recharger
-    event.preventDefault();
+form.addEventListener("submit", async function (event) {
+  // On empêche la page de se recharger
+  event.preventDefault();
 
-    // 3. On récupère ce que l'utilisateur a écrit
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
+  // 3. On récupère ce que l'utilisateur a écrit
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const submitBtn = document.getElementById("login-btn");
 
-    // 4. On prépare le paquet à envoyer à l'API
-    const user = {
-        email: emailInput.value,
-        password: passwordInput.value
-    };
+  if (!email || !password) {
+    alert("Veuillez remplir tous les champs");
+    return;
+  }
 
-    try {
-        // 5. On envoie la demande au serveur (POST)
-        const response = await fetch("http://localhost:5678/api/users/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
-        });
+  // 4. On prépare le paquet à envoyer à l'API
 
-        // 6. Si le serveur dit "OK"
-        if (response.ok) {
-            const data = await response.json();
-            // On sauvegarde la preuve de connexion (token)
-            localStorage.setItem("token", data.token);
-            // On redirige vers la page d'accueil
-            window.location.href = "index.html";
-        } else {
-            // Sinon, on affiche une erreur
-            alert("Erreur : email ou mot de passe incorrect.");
-        }
+  const user = { email, password };
 
-    } catch (error) {
-        console.error("Erreur technique :", error);
+  try {
+    submitBtn.disabled = true;
+    // 5. On envoie la demande au serveur (POST)
+    const response = await fetch("http://localhost:5678/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Email ou mot de passe incorrect");
     }
+    const data = await response.json();
+    localStorage.setItem("token", data.token);
+    window.location.replace("index.html");
+  } catch (error) {
+    alert(error.message);
+    submitBtn.disabled = false;
+  }
 });
