@@ -21,7 +21,7 @@ if (token) {
   if (loginLink) {
     loginLink.innerText = "logout";
     loginLink.href = "#";
-    
+
     // Clic sur logout = déconnexion
     loginLink.addEventListener("click", () => {
       localStorage.removeItem("token");
@@ -262,10 +262,14 @@ fillCategorySelect();
 function initPhotoPreview() {
   const fileInput = document.getElementById("file");
   const previewImg = document.getElementById("preview-img");
-  const removeBtn = document.getElementById("remove-photo-btn");
-  const photoContainer = document.querySelector(".form-group-photo");
+  const replaceMessage = document.querySelector(".photo-replace-message");
 
-  if (!fileInput || !previewImg || !removeBtn || !photoContainer) return;
+  if (!fileInput || !previewImg || !replaceMessage) return;
+
+  fileInput.value = "";
+  previewImg.src = "#";
+  previewImg.classList.remove("preview-visible");
+  replaceMessage.textContent = "";
 
   const MAX_SIZE = 4 * 1024 * 1024;
 
@@ -275,7 +279,8 @@ function initPhotoPreview() {
 
     if (file.size > MAX_SIZE) {
       alert("Fichier trop volumineux (max 4Mo)");
-      resetPreview();
+      fileInput.value = "";
+      replaceMessage.textContent = "";
       return;
     }
 
@@ -283,34 +288,30 @@ function initPhotoPreview() {
     reader.onload = () => {
       previewImg.src = reader.result;
       previewImg.classList.add("preview-visible");
-      removeBtn.style.display = "block";
+
+      replaceMessage.textContent = "Cliquez sur l’image pour la remplacer.";
     };
+
     reader.readAsDataURL(file);
   });
 
-  removeBtn.addEventListener("click", (e) => {
-    e.stopPropagation(); // 🔥 empêche la remontée vers le container
-    resetPreview();
+  previewImg.addEventListener("click", () => {
+    fileInput.click();
   });
-
-  function resetPreview() {
-    fileInput.value = "";
-    previewImg.src = "";
-    previewImg.classList.remove("preview-visible");
-    removeBtn.style.display = "none";
-  }
 }
 
 initPhotoPreview();
 
 function resetAddPhotoForm() {
+  console.log("Étape 1 : La fonction resetAddPhotoForm vient de se lancer !");
+
   const fileInput = document.getElementById("file");
   const previewImg = document.getElementById("preview-img");
   const removeBtn = document.getElementById("remove-photo-btn");
   const form = document.getElementById("add-photo-form");
+  const replaceMessage = document.querySelector(".photo-replace-message");
 
   if (form) form.reset();
-
   if (fileInput) fileInput.value = "";
 
   if (previewImg) {
@@ -321,6 +322,20 @@ function resetAddPhotoForm() {
   if (removeBtn) {
     removeBtn.style.display = "none";
   }
+
+  // C'est ici qu'on vérifie notre message
+  if (replaceMessage) {;
+    replaceMessage.textContent = "";
+  }
+
+  // On remet aussi à zéro les messages d'erreurs (si tu as fait l'étape précédente)
+  const errorImage = document.getElementById("error-image");
+  const errorTitle = document.getElementById("error-title");
+  const errorCategory = document.getElementById("error-category");
+
+  if (errorImage) errorImage.textContent = "";
+  if (errorTitle) errorTitle.textContent = "";
+  if (errorCategory) errorCategory.textContent = "";
 }
 
 /**
