@@ -303,13 +303,19 @@ function initPhotoPreview() {
 initPhotoPreview();
 
 function resetAddPhotoForm() {
-  console.log("Étape 1 : La fonction resetAddPhotoForm vient de se lancer !");
-
+  const form = document.getElementById("add-photo-form");
   const fileInput = document.getElementById("file");
   const previewImg = document.getElementById("preview-img");
   const removeBtn = document.getElementById("remove-photo-btn");
-  const form = document.getElementById("add-photo-form");
   const replaceMessage = document.querySelector(".photo-replace-message");
+
+  const errorImage = document.getElementById("error-image");
+  const errorTitle = document.getElementById("error-title");
+  const errorCategory = document.getElementById("error-category");
+
+  if (errorImage) errorImage.textContent = "";
+  if (errorTitle) errorTitle.textContent = "";
+  if (errorCategory) errorCategory.textContent = "";
 
   if (form) form.reset();
   if (fileInput) fileInput.value = "";
@@ -323,16 +329,11 @@ function resetAddPhotoForm() {
     removeBtn.style.display = "none";
   }
 
-  // C'est ici qu'on vérifie notre message
-  if (replaceMessage) {;
+
+  if (replaceMessage) {
     replaceMessage.textContent = "";
   }
-
-  // On remet aussi à zéro les messages d'erreurs (si tu as fait l'étape précédente)
-  const errorImage = document.getElementById("error-image");
-  const errorTitle = document.getElementById("error-title");
-  const errorCategory = document.getElementById("error-category");
-
+  
   if (errorImage) errorImage.textContent = "";
   if (errorTitle) errorTitle.textContent = "";
   if (errorCategory) errorCategory.textContent = "";
@@ -347,44 +348,42 @@ function checkFormValidity() {
   const categorySelect = document.getElementById("category");
   const fileInput = document.getElementById("file");
   const submitBtn = document.querySelector(".btn-submit");
-  const errorMessage = document.getElementById("error-message");
 
-  // Guard clause : arrêt si les éléments du DOM sont introuvables
-  if (
-    !titleInput ||
-    !categorySelect ||
-    !fileInput ||
-    !submitBtn ||
-    !errorMessage
-  )
-    return;
+  // 1. On cible nos trois nouveaux paragraphes
+  const errorImage = document.getElementById("error-image");
+  const errorTitle = document.getElementById("error-title");
+  const errorCategory = document.getElementById("error-category");
 
-  // Fonction de mise à jour de l'interface utilisateur
+  if (!titleInput || !categorySelect || !fileInput || !submitBtn) return;
+
   const updateUI = () => {
+    // 2. On vérifie l'état de chaque champ
     const isTitleValid = titleInput.value.trim() !== "";
     const isCategoryValid = categorySelect.value !== "";
     const isFileValid = fileInput.files.length > 0;
     const isFormValid = isTitleValid && isCategoryValid && isFileValid;
 
-    // Bascule de l'état du bouton submit
+    // 3. Gestion du bouton Valider (ton code d'origine)
     submitBtn.disabled = !isFormValid;
     isFormValid
       ? submitBtn.classList.add("btn-submit-active")
       : submitBtn.classList.remove("btn-submit-active");
 
-    // Gestion des messages d'erreur (Priorité : Fichier > Titre > Catégorie)
-    if (isFormValid) {
-      errorMessage.textContent = "";
-    } else if (!isFileValid) {
-      errorMessage.textContent = "Image requise.";
-    } else if (!isTitleValid) {
-      errorMessage.textContent = "Titre requis.";
-    } else if (!isCategoryValid) {
-      errorMessage.textContent = "Catégorie requise.";
-    }
+    // 4. Gestion des messages individuels
+    // On utilise une ternaire : si c'est valide, on met du vide "", sinon on affiche l'erreur
+    if (errorImage)
+      errorImage.textContent = isFileValid ? "" : "Veuillez ajouter une photo.";
+    if (errorTitle)
+      errorTitle.textContent = isTitleValid
+        ? ""
+        : "Veuillez renseigner un titre.";
+    if (errorCategory)
+      errorCategory.textContent = isCategoryValid
+        ? ""
+        : "Veuillez choisir une catégorie.";
   };
 
-  // Attachement des écouteurs d'événements pour une validation en temps réel
+  // 5. On écoute les changements
   titleInput.addEventListener("input", updateUI);
   categorySelect.addEventListener("change", updateUI);
   fileInput.addEventListener("change", updateUI);

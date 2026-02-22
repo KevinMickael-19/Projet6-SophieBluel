@@ -119,17 +119,20 @@
 							<img id="preview-img" src="#" alt="Aperçu de l'image">
 						</div>
 						<p class="photo-replace-message"></p>
+						<p id="error-image" class="form-error"></p>
 
 						<label for="title" class="form-label">Titre</label>
 						<input type="text" name="title" id="title" class="form-input">
+						<p id="error-title" class="form-error"></p>
 
 						<label for="category" class="form-label">Catégorie</label>
 						<select name="category" id="category" class="form-input">
+
 							<option value="" disabled selected></option>
 						</select>
+						<p id="error-category" class="form-error"></p>
 
 						<hr class="modal-line">
-						<p id="error-message"></p>
 						<button type="submit" class="btn-valider btn-submit" disabled>Valider</button>
 					</form>
 				</div>
