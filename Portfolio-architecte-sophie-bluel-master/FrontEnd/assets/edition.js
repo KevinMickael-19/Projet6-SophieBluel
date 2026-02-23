@@ -464,6 +464,9 @@ async function processUpload() {
         // 1. On récupère les infos du projet créé par l'API (ID, url, titre...)
         const newWork = await response.json();
 
+        // Ajout du nouveau projet dans le tableau gloabal en mémoire
+        works.push(newWork);
+
         // 2. AJOUT DANS LA GALERIE PRINCIPALE (Page d'accueil)
         const mainGallery = document.querySelector(".gallery");
         if (mainGallery) {
