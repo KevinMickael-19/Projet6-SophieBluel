@@ -533,6 +533,8 @@ async function processUpload() {
                   `.gallery figure[data-id="${newWork.id}"]`,
                 );
                 if (mainFig) mainFig.remove();
+                // Mise à jour du tableau global en filtrant l'ID du projet supprimé
+                works = works.filter((work) => work.id !== newWork.id);
               } else {
                 // Affichage de la notification d'erreur
                 showNotification(
