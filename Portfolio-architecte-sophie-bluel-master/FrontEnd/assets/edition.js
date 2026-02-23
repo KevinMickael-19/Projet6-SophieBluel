@@ -296,44 +296,51 @@ function initPhotoPreview() {
   });
 
   previewImg.addEventListener("click", () => {
+    resetImageInput();
     fileInput.click();
   });
 }
 
 initPhotoPreview();
 
-function resetAddPhotoForm() {
-  const form = document.getElementById("add-photo-form");
+// Réinitialisation de l'aperçu de l'image et du message de remplacement
+function resetImageInput() {
   const fileInput = document.getElementById("file");
   const previewImg = document.getElementById("preview-img");
-  const removeBtn = document.getElementById("remove-photo-btn");
   const replaceMessage = document.querySelector(".photo-replace-message");
 
+  if (fileInput) fileInput.value = "";
+
+  // Réinitialisation de la balise img
+  if (previewImg) {
+    previewImg.src = "#";
+    previewImg.classList.remove("preview-visible");
+  }
+
+  if (replaceMessage) {
+    replaceMessage.textContent = "";
+  }
+}
+
+// Réinitialisation complète du formulaire d'ajout
+// Inclut le vidage des inputs, de l'image et des messages d'erreur
+function resetAddPhotoForm() {
+  const form = document.getElementById("add-photo-form");
+  const removeBtn = document.getElementById("remove-photo-btn");
   const errorImage = document.getElementById("error-image");
   const errorTitle = document.getElementById("error-title");
   const errorCategory = document.getElementById("error-category");
 
-  if (errorImage) errorImage.textContent = "";
-  if (errorTitle) errorTitle.textContent = "";
-  if (errorCategory) errorCategory.textContent = "";
-
   if (form) form.reset();
-  if (fileInput) fileInput.value = "";
 
-  if (previewImg) {
-    previewImg.classList.remove("preview-visible");
-    previewImg.removeAttribute("src");
-  }
+  // Appel de la fonction dédiée pour la zone image
+  resetImageInput();
 
   if (removeBtn) {
     removeBtn.style.display = "none";
   }
 
-
-  if (replaceMessage) {
-    replaceMessage.textContent = "";
-  }
-  
+  // Nettoyage des messages de validation
   if (errorImage) errorImage.textContent = "";
   if (errorTitle) errorTitle.textContent = "";
   if (errorCategory) errorCategory.textContent = "";
