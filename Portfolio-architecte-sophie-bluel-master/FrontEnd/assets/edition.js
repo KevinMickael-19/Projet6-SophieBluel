@@ -1,6 +1,26 @@
 // On récupère le token
 const token = localStorage.getItem("token");
 
+function showNotification(message, isError = false) {
+  const notif = document.getElementById("notification");
+  if (!notif) return;
+
+  // Injection du texte défini en paramètre
+  notif.textContent = message;
+
+  // Réinitialisation des classes existantes
+  notif.className = "notification";
+
+  // Application de la couleur et affichage de l'élément
+  notif.classList.add(isError ? "error" : "success");
+  notif.classList.add("show");
+
+  // Masquage automatique après un délai de 3000 millisecondes
+  setTimeout(() => {
+    notif.classList.remove("show");
+  }, 3000);
+}
+
 // SI ON EST CONNECTÉ (Token présent)
 
 if (token) {
@@ -113,6 +133,7 @@ if (token) {
           );
 
           if (response.ok) {
+            showNotification("Projet supprimé avec succès");
             figure.remove();
             const elementPrincipal = document.querySelector(
               `.gallery figure[data-id="${id}"]`,
@@ -438,7 +459,7 @@ async function processUpload() {
 
       // Traitement de la réponse serveur
       if (response.ok) {
-        // --- REMPLACEMENT DU BLOC LIGNES 487-504 ---
+        showNotification("Projet ajouté avec succès");
 
         // 1. On récupère les infos du projet créé par l'API (ID, url, titre...)
         const newWork = await response.json();
@@ -480,21 +501,42 @@ async function processUpload() {
           trashBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
 
           // Permet de rendre la poubelle active sans avoir à recharger la page
+          // Déclenchement de la suppression au clic sur la poubelle du nouveau projet
           trashBtn.addEventListener("click", async (e) => {
             e.preventDefault();
+
             if (
-              confirm(`Voulez-vous supprimer le projet "${newWork.title} ?`)
+              confirm(`Voulez-vous supprimer le projet "${newWork.title}" ?`)
             ) {
-              await fetch(`http://localhost:5678/api/works/${newWork.id}`, {
-                method: "DELETE",
-                headers: { Authorization: `Bearer ${token}` },
-              });
-              // Suppression visuelle immédiate
-              figure.remove(); // Modale
-              const mainFig = document.querySelector(
-                `.gallery figure[data-id="${newWork.id}"]`,
+              // Exécution de la requête DELETE et stockage de la réponse
+              const deleteResponse = await fetch(
+                `http://localhost:5678/api/works/${newWork.id}`,
+                {
+                  method: "DELETE",
+                  headers: { Authorization: `Bearer ${token}` },
+                },
               );
-              if (mainFig) mainFig.remove(); // Galerie
+
+              // Vérification du succès de la requête API
+              if (deleteResponse.ok) {
+                // Affichage de la notification de succès
+                showNotification("Projet supprimé avec succès");
+
+                // Suppression de l'élément dans la modale
+                figure.remove();
+
+                // Sélection et suppression de l'élément dans la galerie principale
+                const mainFig = document.querySelector(
+                  `.gallery figure[data-id="${newWork.id}"]`,
+                );
+                if (mainFig) mainFig.remove();
+              } else {
+                // Affichage de la notification d'erreur
+                showNotification(
+                  "Erreur lors de la suppression du projet",
+                  true,
+                );
+              }
             }
           });
 
@@ -526,8 +568,7 @@ async function processUpload() {
         }
       } else {
         // Gestion des erreurs de validation API
-        console.error("Échec de l'upload");
-        alert("Erreur lors de l'envoi. Vérification du formulaire requise.");
+        showNotification("Erreur lors de l'envoi du formulaire", true);
       }
     } catch (error) {
       // Gestion des erreurs réseau

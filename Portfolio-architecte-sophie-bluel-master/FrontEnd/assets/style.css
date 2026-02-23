@@ -558,3 +558,37 @@ footer nav ul {
     margin-top: -25px;
     text-align: center;
 }
+
+/* Style global de la notification */
+.notification {
+    position: fixed;
+    top: 20px;
+    margin: 0 auto;
+    padding: 15px 25px;
+    border-radius: 5px;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Classe d'affichage dynamique */
+.notification.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Couleur pour un succès */
+.notification.success {
+    background-color: #1D6154;
+}
+
+/* Couleur pour une erreur */
+.notification.error {
+    background-color: #FF4D4D;
+}
