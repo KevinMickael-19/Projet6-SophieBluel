@@ -288,6 +288,11 @@ a:hover {
     box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+#login-btn {
+
+    cursor: pointer;
+}
+
 input[type="submit"] {
     font-family: 'Syne';
     font-weight: 700;
@@ -344,7 +349,6 @@ footer nav ul {
     top: 0;
     left: 0;
     gap: 10px;
-    /* Espace entre l'icône et le texte */
 }
 
 /* 2. Le bouton "modifier" à côté du titre */
@@ -417,10 +421,6 @@ footer nav ul {
     color: black;
     margin-top: 20px;
     margin-bottom: 40px;
-}
-
-#titlemodal-add {
-
     text-align: center;
 }
 
@@ -433,9 +433,11 @@ footer nav ul {
     padding: 10px 40px;
     border: none;
     border-radius: 60px;
-    margin-top: 30px;
+    margin: 30px auto 0 auto;
     cursor: pointer;
+    display: block;
 }
+
 
 .modal-line {
     width: 100%;
@@ -455,15 +457,13 @@ footer nav ul {
 .modal-gallery {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    /* 5 colonnes */
-    gap: 10px;
-    /* Espace entre les photos */
+    column-gap: 10px;
+    row-gap: 30px;
     margin-bottom: 20px;
 }
 
 .modal-gallery figure {
     position: relative;
-    /* Important pour placer l'icône par-dessus */
     margin: 0;
 }
 
@@ -482,13 +482,12 @@ footer nav ul {
     right: 6px;
     background-color: black;
     color: white;
-    width: 20px;
-    height: 20px;
+    width: 17px;
+    height: 17px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 4px;
-    font-size: 9px;
     cursor: pointer;
     z-index: 1000;
 
@@ -496,15 +495,10 @@ footer nav ul {
 
 .delete-btn i {
 
-    font-size: 14px;
+    font-size: 10px;
     pointer-events: none;
 }
 
-.btn-add-photo {
-
-    display: block;
-    margin: 0 auto;
-}
 
 /* --- GESTION DES VUES (État) --- */
 .modal-view-hidden {
