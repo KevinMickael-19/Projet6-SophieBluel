@@ -33,7 +33,7 @@ form.addEventListener("submit", async function (event) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || "Email ou mot de passe incorrect");
+      throw new Error("Email ou mot de passe incorrect");
     }
     const data = await response.json();
     localStorage.setItem("token", data.token);
