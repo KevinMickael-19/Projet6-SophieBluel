@@ -3,218 +3,330 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
 }
+
 body {
-	line-height: 1;
+    line-height: 1;
 }
-ol, ul {
-	list-style: none;
+
+ol,
+ul {
+    list-style: none;
 }
-blockquote, q {
-	quotes: none;
+
+blockquote,
+q {
+    quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
 }
+
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 a {
-	text-decoration: none;
-	color: inherit;
+    text-decoration: none;
+    color: inherit;
 }
+
 /** end reset css**/
 body {
-	max-width: 1140px;
-	margin:auto;
-	font-family: 'Work Sans' ;
-	font-size: 14px;
+    max-width: 1140px;
+    margin: auto;
+    font-family: 'Work Sans';
+    font-size: 14px;
 }
+
 header {
-	display: flex;
-	justify-content: space-between;
-	margin: 50px 0
+    display: flex;
+    justify-content: space-between;
+    margin: 50px 0
 }
+
 section {
-	margin: 50px 0
+    margin: 50px 0
 }
 
-h1{
-	display: flex;
-	flex-direction: column;
-	font-family: 'Syne';
-	font-size: 22px;
-	font-weight: 800;
-	color: #B1663C
+h1 {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Syne';
+    font-size: 22px;
+    font-weight: 800;
+    color: #B1663C
 }
 
-h1 > span {
-	font-family: 'Work Sans';
-	font-size:10px;
-	letter-spacing: 0.1em;
-;
+h1>span {
+    font-family: 'Work Sans';
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    ;
 }
 
-h2{
-	font-family: 'Syne';
-	font-weight: 700;
-	font-size: 30px;
-	color: #1D6154
+h2 {
+    font-family: 'Syne';
+    font-weight: 700;
+    font-size: 30px;
+    color: #1D6154
 }
+
 nav ul {
-	display: flex;
-	align-items: center;
-	list-style-type: none;
+    display: flex;
+    align-items: center;
+    list-style-type: none;
 
 }
+
 nav li {
-	padding: 0 10px;
-	font-size: 1.2em;
+    padding: 0 10px;
+    font-size: 1.2em;
 }
 
-li:hover, a:hover {
-	color: #B1663C;
+li:hover,
+a:hover {
+    color: #B1663C;
 }
+
 #introduction {
-	display: flex;
-	align-items: center;
+    display: flex;
+    align-items: center;
 }
+
 #introduction figure {
-	flex: 1
+    flex: 1
 }
+
 #introduction img {
-	display: block;
-	margin: auto;
-	width: 80%;
+    display: block;
+    margin: auto;
+    width: 80%;
 }
 
 #introduction article {
-	flex: 1
+    flex: 1
 }
+
 #introduction h2 {
-	margin-bottom: 1em;
+    margin-bottom: 1em;
 }
 
 #introduction p {
-	margin-bottom: 0.5em;
+    margin-bottom: 0.5em;
 }
+
 #portfolio h2 {
-	text-align: center;
-	margin-bottom: 1em;
+    text-align: center;
+    margin-bottom: 1em;
 }
+
 .gallery {
-	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
 }
 
 .gallery img {
-	width: 100%;
+    width: 100%;
     height: 100%;
     object-fit: cover;
 
 }
-#contact, #login {
-	width: 50%;
-	margin: auto;
-}
-#contact > *, #login > * {
-	text-align: center;
 
-}
-#contact h2, #login form {
-	margin-bottom: 20px;
-}
-#contact form, #login form{
-	text-align: left;
-	margin-top:30px;
-	display: flex;
-	flex-direction: column;
+#contact,
+#login {
+    width: 50%;
+    margin: auto;
 }
 
-#contact input, #login input {
-	height: 50px;
-	font-size: 1.2em;
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
-#contact label, #login input {
-	margin: 2em 0 1em 0;
-}
-#contact textarea, #login textarea {
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+#contact>*,
+#login>* {
+    text-align: center;
+
 }
 
-input[type="submit"]{
-	font-family: 'Syne';
-	font-weight: 700;
-	color: white;
-	background-color: #1D6154;
-	margin : 2em auto ;
-	width: 180px;
-	text-align: center;
-	border-radius: 60px ;
+#contact h2,
+#login form {
+    margin-bottom: 20px;
+}
+
+#contact form,
+#login form {
+    text-align: left;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+#contact input,
+#login input {
+    height: 50px;
+    font-size: 1.2em;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#contact label,
+#login input {
+    margin: 2em 0 1em 0;
+}
+
+#contact textarea,
+#login textarea {
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+input[type="submit"] {
+    font-family: 'Syne';
+    font-weight: 700;
+    color: white;
+    background-color: #1D6154;
+    margin: 2em auto;
+    width: 180px;
+    text-align: center;
+    border-radius: 60px;
 }
 
 footer nav ul {
-	display: flex;
-	justify-content: flex-end;
-	margin: 2em
+    display: flex;
+    justify-content: flex-end;
+    margin: 2em
 }
 
 .filters {
-	display: flex;
-	justify-content: center;
-	gap: 10px;
-	margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 50px;
 }
 
 .filters button {
-	font-family: 'Syne';
-	font-weight: 700;
-	color: #1D6154;
-	background-color: white;
-	border: 1px solid #1D6154;
-	border-radius: 60px;
-	padding: 9px 38px;
-	cursor: pointer;
+    font-family: 'Syne';
+    font-weight: 700;
+    color: #1D6154;
+    background-color: white;
+    border: 1px solid #1D6154;
+    border-radius: 60px;
+    padding: 9px 38px;
+    cursor: pointer;
 }
 
-.filters button:hover, .filters button.active {
-	background-color: #1D6154;
-	color: white;
+.filters button:hover,
+.filters button.active {
+    background-color: #1D6154;
+    color: white;
 }
 
 /* === MODE ÉDITION === */
@@ -231,7 +343,8 @@ footer nav ul {
     position: absolute;
     top: 0;
     left: 0;
-    gap: 10px; /* Espace entre l'icône et le texte */
+    gap: 10px;
+    /* Espace entre l'icône et le texte */
 }
 
 /* 2. Le bouton "modifier" à côté du titre */
@@ -262,11 +375,14 @@ footer nav ul {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3); /* Fond sombre transparent */
-    display: none; /* Caché par défaut */
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Fond sombre transparent */
+    display: none;
+    /* Caché par défaut */
     justify-content: center;
     align-items: center;
-    z-index: 100; /* Au-dessus de tout */
+    z-index: 100;
+    /* Au-dessus de tout */
 }
 
 /* Classe pour afficher la modale (ajoutée par le JS) */
@@ -294,7 +410,8 @@ footer nav ul {
     font-size: 20px;
 }
 
-#titlemodal, #titlemodal-add {
+#titlemodal,
+#titlemodal-add {
     font-family: 'Work Sans';
     font-size: 26px;
     color: black;
@@ -304,10 +421,11 @@ footer nav ul {
 
 #titlemodal-add {
 
-	text-align: center;
+    text-align: center;
 }
 
-.btn-valider, .btn-add-photo {
+.btn-valider,
+.btn-add-photo {
     font-family: 'Syne';
     font-weight: 700;
     color: white;
@@ -336,13 +454,16 @@ footer nav ul {
 
 .modal-gallery {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 colonnes */
-    gap: 10px; /* Espace entre les photos */
+    grid-template-columns: repeat(5, 1fr);
+    /* 5 colonnes */
+    gap: 10px;
+    /* Espace entre les photos */
     margin-bottom: 20px;
 }
 
 .modal-gallery figure {
-    position: relative; /* Important pour placer l'icône par-dessus */
+    position: relative;
+    /* Important pour placer l'icône par-dessus */
     margin: 0;
 }
 
@@ -350,7 +471,7 @@ footer nav ul {
     width: 100%;
     height: 100%;
     object-fit: cover;
-	
+
 }
 
 /* Icône poubelle */
@@ -369,20 +490,20 @@ footer nav ul {
     border-radius: 4px;
     font-size: 9px;
     cursor: pointer;
-	z-index: 1000;
+    z-index: 1000;
 
 }
 
 .delete-btn i {
 
-	font-size: 14px;
-	pointer-events: none;
+    font-size: 14px;
+    pointer-events: none;
 }
 
 .btn-add-photo {
 
-	display: block;
-	margin: 0 auto;
+    display: block;
+    margin: 0 auto;
 }
 
 /* --- GESTION DES VUES (État) --- */
@@ -392,7 +513,8 @@ footer nav ul {
 
 /* --- NAVIGATION & ICÔNES --- */
 /* On retire les styles par défaut des boutons pour ne garder que l'icône */
-.modal-icon-close, .modal-icon-back {
+.modal-icon-close,
+.modal-icon-back {
     position: absolute;
     top: 30px;
     background: none;
@@ -407,13 +529,14 @@ footer nav ul {
 }
 
 .modal-icon-back {
-    left: 30px; /* Place la flèche correctement à gauche */
+    left: 30px;
+    /* Place la flèche correctement à gauche */
 }
 
 /* --- FORMULAIRE D'AJOUT --- */
 .modal-form {
     width: 420px;
-    margin: 0 auto; 
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -421,7 +544,7 @@ footer nav ul {
 
 /* Input File caché proprement */
 .form-image-input {
-    display: none; 
+    display: none;
 }
 
 /* Zone Photo (Carré Bleu) */
@@ -506,12 +629,13 @@ footer nav ul {
 }
 
 .preview-visible {
-	display: block !important;
+    display: block !important;
 }
 
 /* État actif du bouton de validation (quand le formulaire est complet) */
 .btn-submit-active {
-    background-color: #1D6154 !important; /* Vert foncé */
+    background-color: #1D6154 !important;
+    /* Vert foncé */
     cursor: pointer;
     opacity: 1;
 }
@@ -527,8 +651,10 @@ footer nav ul {
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 15px;
-    color: #FF4D4D; /* Rouge alerte */
-    height: 20px;   /* Hauteur fixe pour éviter le layout shift */
+    color: #FF4D4D;
+    /* Rouge alerte */
+    height: 20px;
+    /* Hauteur fixe pour éviter le layout shift */
 }
 
 .filters button.active {
@@ -548,7 +674,7 @@ footer nav ul {
     color: #FF4D4D;
     font-size: 12px;
     font-weight: 500;
-    margin-top: -10px; 
+    margin-top: -10px;
     min-height: 14px;
     text-align: center;
 
@@ -591,4 +717,63 @@ footer nav ul {
 /* Couleur pour une erreur */
 .notification.error {
     background-color: #FF4D4D;
+}
+
+/* --- Modales d'alerte et de confirmation --- */
+
+.custom-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.custom-dialog-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    min-width: 300px;
+    font-family: 'Syne', sans-serif;
+}
+
+.custom-dialog-box p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #3d3d3d;
+}
+
+.custom-dialog-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.custom-dialog-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: inherit;
+    transition: background 0.2s ease;
+}
+
+.custom-dialog-btn.confirm-yes,
+.custom-dialog-btn:not(.confirm-no) {
+    background-color: #1D6154;
+    color: white;
+}
+
+.custom-dialog-btn.confirm-no {
+    background-color: #fff;
+    color: #1D6154;
+    border: 1px solid #1D6154;
 }

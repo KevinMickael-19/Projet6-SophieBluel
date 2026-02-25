@@ -1,6 +1,71 @@
 // On récupère le token
 const token = localStorage.getItem("token");
 
+// --- MODALES PERSONNALISÉES ---
+
+function customAlert(message) {
+  return new Promise((resolve) => {
+    const overlay = document.createElement("div");
+    overlay.className = "custom-dialog-overlay";
+
+    const box = document.createElement("div");
+    box.className = "custom-dialog-box";
+
+    const text = document.createElement("p");
+    text.textContent = message;
+
+    const btnOk = document.createElement("button");
+    btnOk.textContent = "OK";
+    btnOk.className = "custom-dialog-btn";
+
+    btnOk.addEventListener("click", () => {
+      document.body.removeChild(overlay);
+      resolve();
+    });
+
+    box.append(text, btnOk);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+  });
+}
+
+function customConfirm(message) {
+  return new Promise((resolve) => {
+    const overlay = document.createElement("div");
+    overlay.className = "custom-dialog-overlay";
+
+    const box = document.createElement("div");
+    box.className = "custom-dialog-box";
+
+    const text = document.createElement("p");
+    text.textContent = message;
+
+    const btnContainer = document.createElement("div");
+    btnContainer.className = "custom-dialog-actions";
+
+    const btnYes = document.createElement("button");
+    btnYes.textContent = "Oui";
+    btnYes.className = "custom-dialog-btn confirm-yes";
+
+    const btnNo = document.createElement("button");
+    btnNo.textContent = "Non";
+    btnNo.className = "custom-dialog-btn confirm-no";
+
+    const closeDialog = (result) => {
+      document.body.removeChild(overlay);
+      resolve(result);
+    };
+
+    btnYes.addEventListener("click", () => closeDialog(true));
+    btnNo.addEventListener("click", () => closeDialog(false));
+
+    btnContainer.append(btnYes, btnNo);
+    box.append(text, btnContainer);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+  });
+}
+
 function showNotification(message, isError = false) {
   const notif = document.getElementById("notification");
   if (!notif) return;
@@ -106,11 +171,9 @@ if (token) {
         deleteBtn.addEventListener("click", async function (event) {
           event.preventDefault();
 
-          console.log("Clic sur la poubelle ID:", deleteBtn.id);
-
           //Confirmation de la suppression
 
-          const confirmation = confirm(
+          const confirmation = await customConfirm(
             `Voulez-vous vraiment supprimer le projet "${projet.title}" ? `,
           );
           if (!confirmation) {
@@ -507,10 +570,11 @@ async function processUpload() {
           // Déclenchement de la suppression au clic sur la poubelle du nouveau projet
           trashBtn.addEventListener("click", async (e) => {
             e.preventDefault();
+            const isConfirmed = await customConfirm(
+              `Voulez-vous supprimer le projet "${newWork.title}" ?`,
+            );
 
-            if (
-              confirm(`Voulez-vous supprimer le projet "${newWork.title}" ?`)
-            ) {
+            if (isConfirmed) {
               // Exécution de la requête DELETE et stockage de la réponse
               const deleteResponse = await fetch(
                 `http://localhost:5678/api/works/${newWork.id}`,
