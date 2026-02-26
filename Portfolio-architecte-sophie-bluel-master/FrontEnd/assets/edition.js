@@ -56,7 +56,7 @@ if (token) {
    */
   function genererGalerieModale(liste) {
     if (!modalGallery) return;
-    
+
     modalGallery.innerHTML = "";
     const fragment = document.createDocumentFragment();
 
@@ -73,6 +73,7 @@ if (token) {
       const deleteBtn = document.createElement("button");
       deleteBtn.classList.add("delete-btn");
       deleteBtn.dataset.id = projet.id;
+      deleteBtn.dataset.title = projet.title;
       deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
 
       figure.append(image, deleteBtn);
@@ -86,6 +87,7 @@ if (token) {
    * Écouteur global pour la suppression de projets.
    * Modèle de délégation d'événements attaché au conteneur parent.
    */
+
   if (modalGallery) {
     modalGallery.addEventListener("click", async (event) => {
       const deleteBtn = event.target.closest(".delete-btn");
@@ -94,7 +96,9 @@ if (token) {
       event.preventDefault();
       const id = deleteBtn.dataset.id;
 
-      const confirmation = await customConfirm(`Voulez-vous vraiment supprimer ce projet ?`);
+      const confirmation = await customConfirm(
+        `Voulez-vous supprimer le projet "${deleteBtn.dataset.title}" ?`,
+      );
       if (!confirmation) return;
 
       const currentToken = localStorage.getItem("token");
@@ -110,12 +114,16 @@ if (token) {
 
         if (response.ok) {
           showNotification("Projet supprimé avec succès");
-          
+
           // Nettoyage des noeuds DOM (Modale & Vue Publique)
-          const modalFigure = modalGallery.querySelector(`figure[data-id="${id}"]`);
+          const modalFigure = modalGallery.querySelector(
+            `figure[data-id="${id}"]`,
+          );
           if (modalFigure) modalFigure.remove();
-          
-          const mainFigure = document.querySelector(`.gallery figure[data-id="${id}"]`);
+
+          const mainFigure = document.querySelector(
+            `.gallery figure[data-id="${id}"]`,
+          );
           if (mainFigure) mainFigure.remove();
 
           // Synchronisation de l'état local
@@ -212,34 +220,32 @@ if (modalOverlay) {
 
 async function fillCategorySelect() {
   const selectElement = document.getElementById("category");
-
-  // Sécurité : on vérifie que l'élément existe avant de continuer
   if (!selectElement) return;
-
-  // On vide le select pour éviter les doublons (garde l'option vide par défaut)
-  selectElement.innerHTML = '<option value="" disabled selected></option>';
 
   try {
     const response = await fetch("http://localhost:5678/api/categories");
 
-    if (response.ok) {
-      const categories = await response.json();
-
-      // Boucle sur chaque catégorie reçue
-      categories.forEach((category) => {
-        // Création de l'élément <option>
-        const option = document.createElement("option");
-        option.value = category.id;
-        option.textContent = category.name;
-
-        // Ajout au menu déroulant
-        selectElement.appendChild(option);
-      });
-    } else {
-      console.error("Erreur lors du chargement des catégories");
+    // Approche "Fail-fast" : on rejette l'erreur immédiatement si le statut n'est pas bon
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP: ${response.status}`);
     }
+
+    const categories = await response.json();
+
+    // Réinitialisation à l'état par défaut (placeholder invisible)
+    selectElement.innerHTML = '<option value="" disabled selected></option>';
+
+    // Création d'un conteneur virtuel pour des performances optimales
+    const fragment = document.createDocumentFragment();
+
+    categories.forEach((category) => {
+      // Le constructeur Option(text, value) est plus concis que createElement
+      fragment.appendChild(new Option(category.name, category.id));
+    });
+
+    selectElement.appendChild(fragment);
   } catch (error) {
-    console.error("Erreur API :", error);
+    console.error("Échec de l'initialisation des catégories :", error);
   }
 }
 
@@ -387,58 +393,50 @@ function checkFormValidity() {
 // Initialisation au chargement
 checkFormValidity();
 
-// TRAITEMENT DU TÉLÉVERSEMENT (UPLOAD)
-// Gestion de l'envoi du nouveau projet vers l'API.
+/**
+ * Gère la soumission du formulaire d'ajout de projet.
+ * Envoie les données à l'API, met à jour l'interface (galerie principale et modale)
+ * et réinitialise le formulaire de manière fluide.
+ */
 
 async function processUpload() {
-  // Sélection des éléments DOM
   const form = document.getElementById("add-photo-form");
-  const previewImg = document.getElementById("preview-img");
   const submitBtn = document.querySelector(".btn-submit");
 
-  // Vérification de l'existence des éléments
-  if (!form || !previewImg || !submitBtn) return;
+  if (!form || !submitBtn) return;
 
-  // Ajout de l'écouteur d'événement sur la soumission
   form.addEventListener("submit", async (event) => {
-    // Annulation du rechargement par défaut
     event.preventDefault();
 
-    // Instanciation des données du formulaire
     const formData = new FormData(form);
+    const currentToken = localStorage.getItem("token");
 
-    // Récupération du jeton d'authentification
-    const token = localStorage.getItem("token");
-
-    // Contrôle de la connexion utilisateur
-    if (!token) {
-      alert("Authentification requise");
+    if (!currentToken) {
+      customAlert("Authentification requise");
       return;
     }
 
     try {
-      // Exécution de la requête POST vers l'API
       const response = await fetch("http://localhost:5678/api/works", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${currentToken}` },
         body: formData,
       });
 
-      // Traitement de la réponse serveur
       if (response.ok) {
         showNotification("Projet ajouté avec succès");
-
-        // 1. On récupère les infos du projet créé par l'API (ID, url, titre...)
         const newWork = await response.json();
 
-        // Ajout du nouveau projet dans le tableau gloabal en mémoire
-        works.push(newWork);
+        // 1. Mise à jour de l'état local
+        if (typeof works !== "undefined") {
+          works.push(newWork);
+        }
 
-        // 2. AJOUT DANS LA GALERIE PRINCIPALE (Page d'accueil)
+        // 2. Injection dans la galerie principale de la page d'accueil
         const mainGallery = document.querySelector(".gallery");
         if (mainGallery) {
           const figure = document.createElement("figure");
-          figure.dataset.id = newWork.id; // Important pour pouvoir le supprimer plus tard
+          figure.dataset.id = newWork.id;
 
           const img = document.createElement("img");
           img.src = newWork.imageUrl;
@@ -447,108 +445,34 @@ async function processUpload() {
           const caption = document.createElement("figcaption");
           caption.innerText = newWork.title;
 
-          figure.appendChild(img);
-          figure.appendChild(caption);
+          figure.append(img, caption);
           mainGallery.appendChild(figure);
         }
 
-        // 3. AJOUT DANS LA MODALE (Vue suppression)
-        const modalGallery = document.querySelector(".modal-gallery");
-        if (modalGallery) {
-          const figure = document.createElement("figure");
-          figure.dataset.id = newWork.id;
-          figure.style.position = "relative"; // Pour placer l'icône
-
-          const img = document.createElement("img");
-          img.src = newWork.imageUrl;
-          img.alt = newWork.title;
-          img.style.width = "78px";
-
-          // Création du bouton poubelle pour le projet créé
-          const trashBtn = document.createElement("button");
-          trashBtn.className = "delete-btn";
-          trashBtn.id = newWork.id;
-          trashBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-
-          // Permet de rendre la poubelle active sans avoir à recharger la page
-          // Déclenchement de la suppression au clic sur la poubelle du nouveau projet
-          trashBtn.addEventListener("click", async (e) => {
-            e.preventDefault();
-            const isConfirmed = await customConfirm(
-              `Voulez-vous supprimer le projet "${newWork.title}" ?`,
-            );
-
-            if (isConfirmed) {
-              // Exécution de la requête DELETE et stockage de la réponse
-              const deleteResponse = await fetch(
-                `http://localhost:5678/api/works/${newWork.id}`,
-                {
-                  method: "DELETE",
-                  headers: { Authorization: `Bearer ${token}` },
-                },
-              );
-
-              // Vérification du succès de la requête API
-              if (deleteResponse.ok) {
-                // Affichage de la notification de succès
-                showNotification("Projet supprimé avec succès");
-
-                // Suppression de l'élément dans la modale
-                figure.remove();
-
-                // Sélection et suppression de l'élément dans la galerie principale
-                const mainFig = document.querySelector(
-                  `.gallery figure[data-id="${newWork.id}"]`,
-                );
-                if (mainFig) mainFig.remove();
-                // Mise à jour du tableau global en filtrant l'ID du projet supprimé
-                works = works.filter((work) => work.id !== newWork.id);
-              } else {
-                // Affichage de la notification d'erreur
-                showNotification(
-                  "Erreur lors de la suppression du projet",
-                  true,
-                );
-              }
-            }
-          });
-
-          figure.appendChild(img);
-          figure.appendChild(trashBtn);
-          modalGallery.appendChild(figure);
+        // 3. Régénération de la grille de la modale avec les écouteurs globaux
+        if (typeof genererGalerieModale === "function" && typeof works !== "undefined") {
+          genererGalerieModale(works);
         }
 
-        // 4. RESET DE L'INTERFACE
-        form.reset(); // Vide les champs texte
-        previewImg.src = ""; // Vide l'image
-        previewImg.classList.remove("preview-visible");
-        // Si tu as une classe spécifique pour cacher/montrer la preview :
-        if (previewImg.classList.contains("preview-visible")) {
-          previewImg.classList.remove("preview-visible");
+        // 4. Réinitialisation de la vue (sans fermer la modale)
+        if (typeof resetAddPhotoForm === "function") {
+          resetAddPhotoForm();
         }
-
-        // Remet le bouton Valider en gris
-        submitBtn.classList.remove("btn-submit-active");
-        submitBtn.disabled = true;
-
-        // Ferme la modale
-        const modal = document.getElementById("modal");
-        /*  modal.classList.remove("modal-show"); */
-
-        // Revient sur la vue "Galerie" pour la prochaine ouverture
+        
         if (typeof resetModalState === "function") {
-          resetModalState();
+          resetModalState(); // Ramène l'utilisateur sur la vue "Galerie"
         }
+
       } else {
-        // Gestion des erreurs de validation API
         showNotification("Erreur lors de l'envoi du formulaire", true);
       }
     } catch (error) {
-      // Gestion des erreurs réseau
       console.error("Erreur réseau :", error);
+      customAlert("Impossible de joindre le serveur.");
     }
   });
 }
 
-// Initialisation du processus
+// Initialisation de l'écouteur
 processUpload();
+
