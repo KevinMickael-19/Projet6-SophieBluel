@@ -12,7 +12,7 @@ form.addEventListener("submit", async function (event) {
   const submitBtn = document.getElementById("login-btn");
 
   if (!email || !password) {
-    alert("Veuillez remplir tous les champs");
+    customAlert("Veuillez remplir tous les champs");
     return;
   }
 
@@ -39,7 +39,7 @@ form.addEventListener("submit", async function (event) {
     localStorage.setItem("token", data.token);
     window.location.replace("index.html");
   } catch (error) {
-    alert(error.message);
+    customAlert(error.message);
     submitBtn.disabled = false;
   }
 });
