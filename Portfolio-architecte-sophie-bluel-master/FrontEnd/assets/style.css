@@ -373,6 +373,7 @@ footer nav ul {
 }
 
 /* === LA MODALE === */
+
 .modal {
     position: fixed;
     top: 0;
@@ -396,13 +397,14 @@ footer nav ul {
 
 .modal-wrapper {
     background-color: white;
-    padding: 30px;
+    padding: 40px 0;
     width: 630px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
+    overflow: hidden;
 }
 
 /* La croix de fermeture */
@@ -460,6 +462,13 @@ footer nav ul {
     column-gap: 10px;
     row-gap: 30px;
     margin-bottom: 20px;
+    max-height: 460px;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.modal-gallery::-webkit-scrollbar {
+    display: none;
 }
 
 .modal-gallery figure {
