@@ -1,173 +1,157 @@
 // On récupère le token
 const token = localStorage.getItem("token");
 
-// --- MODALES PERSONNALISÉES ---
-
-
-
 // SI ON EST CONNECTÉ (Token présent)
 
 if (token) {
-  // 1. Création de la barre noire
+  // Initialisation de la bannière d'édition
   const topBar = document.createElement("div");
-  topBar.classList.add("edition-mode-banner"); // On ajoute la classe CSS
+  topBar.classList.add("edition-mode-banner");
   topBar.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> Mode édition';
   document.body.prepend(topBar);
 
-  // 2. Décalage du header (pour pas qu'il soit sous la barre)
+  // Ajustement de la disposition du header
   const header = document.querySelector("header");
-  if (header) {
-    header.classList.add("header-decale");
-  }
+  if (header) header.classList.add("header-decale");
 
-  // 3. Changement Login -> Logout
+  // Mise à jour de la navigation (Authentification)
   const loginLink = document.querySelector("nav ul li a[href='login.html']");
   if (loginLink) {
     loginLink.innerText = "logout";
     loginLink.href = "#";
-
-    // Clic sur logout = déconnexion
     loginLink.addEventListener("click", () => {
       localStorage.removeItem("token");
       window.location.reload();
     });
   }
 
-  // 4. Cacher les filtres
+  // Masquage conditionnel des filtres de la galerie
   const filters = document.querySelector(".filters");
+  if (filters) filters.classList.add("hidden");
+
+  // Initialisation des éléments de la modale
   const modal = document.querySelector("#modal");
-  const closeModalBtn = document.querySelector(".js-close-modal");
+  const modalGallery = document.querySelector(".modal-gallery");
 
-  if (filters) {
-    filters.classList.add("hidden"); // On ajoute la classe qui cache
-  }
-
-  // 5. Ajout du bouton "Modifier" à côté de "Mes Projets"
+  // Injection du déclencheur de la modale d'édition
   const titleProjects = document.querySelector("#portfolio h2");
   if (titleProjects) {
     const editLink = document.createElement("a");
     editLink.href = "#";
-    editLink.classList.add("edit-btn"); // On ajoute la classe CSS
+    editLink.classList.add("edit-btn");
     editLink.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> modifier';
     titleProjects.appendChild(editLink);
 
-    // 1. OUVRIR LA MODALE : Au clic sur "modifier"
-    editLink.addEventListener("click", function (event) {
+    editLink.addEventListener("click", (event) => {
       event.preventDefault();
-      modal.classList.add("modal-show"); // On ajoute la classe qui affiche
+      modal.classList.add("modal-show");
       genererGalerieModale(works);
     });
+  }
 
-    // Fonction pour générer la galerie dans la modale
+  /**
+   * Construit et injecte la grille d'images dans la modale.
+   * Utilisation d'un DocumentFragment pour limiter les reflows du DOM.
+   * * @param {Array} liste - Collection des travaux à afficher
+   */
+  function genererGalerieModale(liste) {
+    if (!modalGallery) return;
+    
+    modalGallery.innerHTML = "";
+    const fragment = document.createDocumentFragment();
 
-    function genererGalerieModale(liste) {
-      const modalGallery = document.querySelector(".modal-gallery");
-      modalGallery.innerHTML = ""; // On vide la galerie
+    liste.forEach((projet) => {
+      const figure = document.createElement("figure");
+      figure.dataset.id = projet.id;
+      figure.style.position = "relative";
 
-      for (let i = 0; i < liste.length; i++) {
-        const projet = liste[i];
+      const image = document.createElement("img");
+      image.src = projet.imageUrl;
+      image.alt = projet.title;
+      image.style.width = "78px";
 
-        // 1. Création de la balise figure
-        const figure = document.createElement("figure");
-        figure.style.position = "relative";
+      const deleteBtn = document.createElement("button");
+      deleteBtn.classList.add("delete-btn");
+      deleteBtn.dataset.id = projet.id;
+      deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
 
-        // 2. Création de l'image
-        const image = document.createElement("img");
-        image.src = projet.imageUrl;
-        image.alt = projet.title;
-        image.style.width = "78px";
+      figure.append(image, deleteBtn);
+      fragment.appendChild(figure);
+    });
 
-        // 3. Création de l'icône poubelle
+    modalGallery.appendChild(fragment);
+  }
 
-        const deleteBtn = document.createElement("button");
-        deleteBtn.classList.add("delete-btn");
-        deleteBtn.id = liste[i].id;
+  /**
+   * Écouteur global pour la suppression de projets.
+   * Modèle de délégation d'événements attaché au conteneur parent.
+   */
+  if (modalGallery) {
+    modalGallery.addEventListener("click", async (event) => {
+      const deleteBtn = event.target.closest(".delete-btn");
+      if (!deleteBtn) return;
 
-        const trashIcon = document.createElement("i");
-        trashIcon.classList.add("fa-solid", "fa-trash-can");
-        deleteBtn.appendChild(trashIcon);
+      event.preventDefault();
+      const id = deleteBtn.dataset.id;
 
-        deleteBtn.addEventListener("click", async function (event) {
-          event.preventDefault();
+      const confirmation = await customConfirm(`Voulez-vous vraiment supprimer ce projet ?`);
+      if (!confirmation) return;
 
-          //Confirmation de la suppression
+      const currentToken = localStorage.getItem("token");
 
-          const confirmation = await customConfirm(
-            `Voulez-vous vraiment supprimer le projet "${projet.title}" ? `,
-          );
-          if (!confirmation) {
-            return;
-          }
-
-          const id = deleteBtn.id;
-          const token = localStorage.getItem("token");
-
-          // Demande de suppression à l' API
-          const response = await fetch(
-            `http://localhost:5678/api/works/${id}`,
-            {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            },
-          );
-
-          if (response.ok) {
-            showNotification("Projet supprimé avec succès");
-            figure.remove();
-            const elementPrincipal = document.querySelector(
-              `.gallery figure[data-id="${id}"]`,
-            );
-            if (elementPrincipal) {
-              elementPrincipal.remove(); //suppression du DOM
-            }
-            works = works.filter((work) => work.id != id);
-          } else {
-            alert("Erreur lors de la suppression");
-          }
+      try {
+        const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${currentToken}`,
+            "Content-Type": "application/json",
+          },
         });
 
-        // 4. Assemblage (Juste l'image et l'icône)
-        figure.appendChild(image);
-        figure.appendChild(deleteBtn);
-        modalGallery.appendChild(figure);
+        if (response.ok) {
+          showNotification("Projet supprimé avec succès");
+          
+          // Nettoyage des noeuds DOM (Modale & Vue Publique)
+          const modalFigure = modalGallery.querySelector(`figure[data-id="${id}"]`);
+          if (modalFigure) modalFigure.remove();
+          
+          const mainFigure = document.querySelector(`.gallery figure[data-id="${id}"]`);
+          if (mainFigure) mainFigure.remove();
+
+          // Synchronisation de l'état local
+          works = works.filter((work) => String(work.id) !== String(id));
+        } else {
+          customAlert("Erreur lors de la suppression");
+        }
+      } catch (error) {
+        console.error("Erreur réseau :", error);
+        customAlert("Impossible de joindre le serveur.");
       }
-    }
-
-    // FERMER LA MODALE : Au clic sur la croix
-    // On sélectionne TOUS les boutons qui ont la classe .js-close-modal
-    const closeButtons = document.querySelectorAll(".js-close-modal");
-
-    // On boucle pour ajouter le clic sur tous les boutons fermer
-    closeButtons.forEach((button) => {
-      button.addEventListener("click", function (event) {
-        event.preventDefault();
-
-        // Ferme la modale
-        modal.classList.remove("modal-show");
-
-        // Reset la vue (si la fonction existe)
-        if (typeof resetModalState === "function") {
-          resetModalState();
-        }
-      });
     });
-    // Fermeture de la modale et réinitialisation de la vue au clic sur l'arrière-plan
-    const modalOverlay = document.getElementById("modal");
+  }
 
-    if (modalOverlay) {
-      modalOverlay.addEventListener("click", function (event) {
-        if (event.target === modalOverlay) {
-          modalOverlay.classList.remove("modal-show");
+  /**
+   * Gestionnaire unifié de fermeture de la modale.
+   */
+  const closeModalHandler = () => {
+    if (modal) modal.classList.remove("modal-show");
+    if (typeof resetModalState === "function") resetModalState();
+  };
 
-          if (typeof resetModalState === "function") {
-            resetModalState();
-          }
-        }
-      });
-    }
+  // Enregistrement des événements de fermeture (Bouton et Backdrop)
+  const closeButtons = document.querySelectorAll(".js-close-modal");
+  closeButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      closeModalHandler();
+    });
+  });
+
+  const modalOverlay = document.getElementById("modal");
+  if (modalOverlay) {
+    modalOverlay.addEventListener("click", (event) => {
+      if (event.target === modalOverlay) closeModalHandler();
+    });
   }
 }
 
@@ -258,6 +242,7 @@ async function fillCategorySelect() {
     console.error("Erreur API :", error);
   }
 }
+
 fillCategorySelect();
 
 // GESTION DE LA PRÉVISUALISATION DE LA PHOTO
