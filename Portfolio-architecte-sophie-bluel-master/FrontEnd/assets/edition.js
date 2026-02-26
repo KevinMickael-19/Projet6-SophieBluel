@@ -449,12 +449,9 @@ async function processUpload() {
         }
 
         // 3. Régénération de la grille de la modale avec les écouteurs globaux
-        if (
-          typeof genererGalerieModale === "function" &&
-          typeof works !== "undefined"
-        ) {
+        
           genererGalerieModale(works);
-        }
+
 
         // 4. Réinitialisation de la vue (sans fermer la modale)
         if (typeof resetAddPhotoForm === "function") {
