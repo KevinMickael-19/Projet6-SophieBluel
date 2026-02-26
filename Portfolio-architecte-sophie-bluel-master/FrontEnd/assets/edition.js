@@ -185,7 +185,6 @@ function openAddPhotoView() {
 function openGalleryView() {
   addPhotoView.classList.add("modal-view-hidden");
   galleryView.classList.remove("modal-view-hidden");
-  resetAddPhotoForm();
 }
 
 // Réinitialise l'état de la modale vers la vue par défaut (Galerie).
@@ -450,7 +449,10 @@ async function processUpload() {
         }
 
         // 3. Régénération de la grille de la modale avec les écouteurs globaux
-        if (typeof genererGalerieModale === "function" && typeof works !== "undefined") {
+        if (
+          typeof genererGalerieModale === "function" &&
+          typeof works !== "undefined"
+        ) {
           genererGalerieModale(works);
         }
 
@@ -458,11 +460,10 @@ async function processUpload() {
         if (typeof resetAddPhotoForm === "function") {
           resetAddPhotoForm();
         }
-        
+
         if (typeof resetModalState === "function") {
           resetModalState(); // Ramène l'utilisateur sur la vue "Galerie"
         }
-
       } else {
         showNotification("Erreur lors de l'envoi du formulaire", true);
       }
@@ -475,4 +476,3 @@ async function processUpload() {
 
 // Initialisation de l'écouteur
 processUpload();
-
