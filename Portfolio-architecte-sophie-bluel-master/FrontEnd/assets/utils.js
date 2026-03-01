@@ -23,7 +23,6 @@ function customAlert(message) {
     document.body.appendChild(overlay);
   });
 }
-
 function customConfirm(message) {
   return new Promise((resolve) => {
     const overlay = document.createElement("div");
@@ -60,7 +59,6 @@ function customConfirm(message) {
     document.body.appendChild(overlay);
   });
 }
-
 function showNotification(message, isError = false) {
   const notif = document.getElementById("notification");
   if (!notif) return;
@@ -80,3 +78,5 @@ function showNotification(message, isError = false) {
     notif.classList.remove("show");
   }, 3000);
 }
+
+export {customAlert, customConfirm, showNotification};

@@ -1,3 +1,4 @@
+import {customAlert, customConfirm, showNotification} from "./utils.js";
 // Déclaration de l'URL de base
 const API_BASE_URL = "http://localhost:5678/api";
 // Variable globale pour stocker les travaux

@@ -302,12 +302,15 @@ function resetImageInput() {
   const previewImg = document.getElementById("preview-img");
   const replaceMessage = document.querySelector(".photo-replace-message");
 
-  if (fileInput) fileInput.value = "";
-
+  if (fileInput) {
+    fileInput.value = "";
+    fileInput.dispatchEvent(new Event("change"));
+  }
   // Réinitialisation de la balise img
   if (previewImg) {
     previewImg.src = "#";
-    previewImg.classList.remove("preview-visible");
+previewImg.classList.remove("preview-visible");
+
   }
 
   if (replaceMessage) {
@@ -457,10 +460,11 @@ async function processUpload() {
         if (typeof resetAddPhotoForm === "function") {
           resetAddPhotoForm();
         }
+        // Ramène l'utilisateur sur la vue "Galerie"
 
-        if (typeof resetModalState === "function") {
-          resetModalState(); // Ramène l'utilisateur sur la vue "Galerie"
-        }
+        /* if (typeof resetModalState === "function") {
+          resetModalState(); 
+        } */
       } else {
         showNotification("Erreur lors de l'envoi du formulaire", true);
       }
