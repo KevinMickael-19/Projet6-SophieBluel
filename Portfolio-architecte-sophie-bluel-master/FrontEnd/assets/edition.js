@@ -228,7 +228,8 @@ async function fillCategorySelect() {
     const categories = await response.json();
 
     // Réinitialisation à l'état par défaut (placeholder invisible)
-    selectElement.innerHTML = '<option value="" disabled selected></option>';
+    selectElement.innerHTML =
+      '<option value="" disabled selected>Choisissez une catégorie</option>';
 
     // Création d'un conteneur virtuel pour des performances optimales
     const fragment = document.createDocumentFragment();
