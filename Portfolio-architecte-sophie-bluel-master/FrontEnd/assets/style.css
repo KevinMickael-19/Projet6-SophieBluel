@@ -151,11 +151,11 @@ body {
 header {
     display: flex;
     justify-content: space-between;
-    margin: 50px 0
+    margin: 50px 0;
 }
 
 section {
-    margin: 50px 0
+    margin: 50px 0;
 }
 
 h1 {
@@ -164,28 +164,26 @@ h1 {
     font-family: 'Syne';
     font-size: 22px;
     font-weight: 800;
-    color: #B1663C
+    color: #b1663c;
 }
 
 h1>span {
     font-family: 'Work Sans';
     font-size: 10px;
     letter-spacing: 0.1em;
-    ;
 }
 
 h2 {
     font-family: 'Syne';
     font-weight: 700;
     font-size: 30px;
-    color: #1D6154
+    color: #1d6154;
 }
 
 nav ul {
     display: flex;
     align-items: center;
     list-style-type: none;
-
 }
 
 nav li {
@@ -195,7 +193,7 @@ nav li {
 
 li:hover,
 a:hover {
-    color: #B1663C;
+    color: #b1663c;
 }
 
 #introduction {
@@ -204,7 +202,7 @@ a:hover {
 }
 
 #introduction figure {
-    flex: 1
+    flex: 1;
 }
 
 #introduction img {
@@ -214,7 +212,7 @@ a:hover {
 }
 
 #introduction article {
-    flex: 1
+    flex: 1;
 }
 
 #introduction h2 {
@@ -233,16 +231,14 @@ a:hover {
 .gallery {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
 
 .gallery img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-
 }
 
 #contact,
@@ -254,7 +250,6 @@ a:hover {
 #contact>*,
 #login>* {
     text-align: center;
-
 }
 
 #contact h2,
@@ -290,15 +285,14 @@ a:hover {
 }
 
 #login-btn {
-
     cursor: pointer;
 }
 
-input[type="submit"] {
+input[type='submit'] {
     font-family: 'Syne';
     font-weight: 700;
     color: white;
-    background-color: #1D6154;
+    background-color: #1d6154;
     margin: 2em auto;
     width: 180px;
     text-align: center;
@@ -308,7 +302,7 @@ input[type="submit"] {
 footer nav ul {
     display: flex;
     justify-content: flex-end;
-    margin: 2em
+    margin: 2em;
 }
 
 .filters {
@@ -321,9 +315,9 @@ footer nav ul {
 .filters button {
     font-family: 'Syne';
     font-weight: 700;
-    color: #1D6154;
+    color: #1d6154;
     background-color: white;
-    border: 1px solid #1D6154;
+    border: 1px solid #1d6154;
     border-radius: 60px;
     padding: 9px 38px;
     cursor: pointer;
@@ -331,7 +325,7 @@ footer nav ul {
 
 .filters button:hover,
 .filters button.active {
-    background-color: #1D6154;
+    background-color: #1d6154;
     color: white;
 }
 
@@ -379,21 +373,19 @@ footer nav ul {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.3);
-    /* Fond sombre transparent */
     display: none;
-    /* Caché par défaut */
     justify-content: center;
     align-items: center;
     z-index: 100;
-    /* Au-dessus de tout */
 }
 
 /* Classe pour afficher la modale (ajoutée par le JS) */
 .modal-show {
     display: flex;
+    width: 100vw;
 }
 
 .modal-wrapper {
@@ -432,7 +424,7 @@ footer nav ul {
     font-family: 'Syne';
     font-weight: 700;
     color: white;
-    background-color: #1D6154;
+    background-color: #1d6154;
     padding: 10px 40px;
     border: none;
     border-radius: 60px;
@@ -441,15 +433,14 @@ footer nav ul {
     display: block;
 }
 
-
 .modal-line {
     width: 100%;
-    border: 1px solid #B3B3B3;
+    border: 1px solid #b3b3b3;
     margin-top: 40px;
 }
 
 .delete-gallery {
-    color: #D65353;
+    color: #d65353;
     font-family: 'Syne';
     margin-top: 20px;
     text-decoration: none;
@@ -481,7 +472,6 @@ footer nav ul {
     width: 100%;
     height: 100%;
     object-fit: cover;
-
 }
 
 /* Icône poubelle */
@@ -500,15 +490,12 @@ footer nav ul {
     border-radius: 4px;
     cursor: pointer;
     z-index: 1000;
-
 }
 
 .delete-btn i {
-
     font-size: 10px;
     pointer-events: none;
 }
-
 
 /* --- GESTION DES VUES (État) --- */
 .modal-view-hidden {
@@ -553,7 +540,7 @@ footer nav ul {
 
 /* Zone Photo (Carré Bleu) */
 .form-group-photo {
-    background-color: #E8F1F6;
+    background-color: #e8f1f6;
     height: 169px;
     width: 100%;
     border-radius: 3px;
@@ -569,12 +556,12 @@ footer nav ul {
 
 .form-icon-image {
     font-size: 58px;
-    color: #B9C5CC;
+    color: #b9c5cc;
     margin-bottom: 10px;
 }
 
 .btn-add-file {
-    background-color: #CBD6DC;
+    background-color: #cbd6dc;
     color: #306685;
     border-radius: 50px;
     padding: 10px 33px;
@@ -598,13 +585,12 @@ footer nav ul {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    background-color: #E8F1F6;
+    background-color: #e8f1f6;
     z-index: 10;
     cursor: pointer;
 }
 
 #preview-img.preview-visible {
-
     display: block;
 }
 
@@ -638,7 +624,7 @@ footer nav ul {
 
 /* État actif du bouton de validation (quand le formulaire est complet) */
 .btn-submit-active {
-    background-color: #1D6154 !important;
+    background-color: #1d6154 !important;
     /* Vert foncé */
     cursor: pointer;
     opacity: 1;
@@ -646,7 +632,7 @@ footer nav ul {
 
 /* État désactivé (Rappel ou ajustement si nécessaire) */
 .btn-submit:disabled {
-    background-color: #A7A7A7;
+    background-color: #a7a7a7;
     cursor: not-allowed;
 }
 
@@ -655,14 +641,14 @@ footer nav ul {
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 15px;
-    color: #FF4D4D;
+    color: #ff4d4d;
     /* Rouge alerte */
     height: 20px;
     /* Hauteur fixe pour éviter le layout shift */
 }
 
 .filters button.active {
-    background-color: #1D6154;
+    background-color: #1d6154;
     color: white;
 }
 
@@ -675,13 +661,12 @@ footer nav ul {
 }
 
 .form-error {
-    color: #FF4D4D;
+    color: #ff4d4d;
     font-size: 12px;
     font-weight: 500;
     margin-top: -10px;
     min-height: 14px;
     text-align: center;
-
 }
 
 #error-image {
@@ -715,12 +700,12 @@ footer nav ul {
 
 /* Couleur pour un succès */
 .notification.success {
-    background-color: #1D6154;
+    background-color: #1d6154;
 }
 
 /* Couleur pour une erreur */
 .notification.error {
-    background-color: #FF4D4D;
+    background-color: #ff4d4d;
 }
 
 /* --- Modales d'alerte et de confirmation --- */
@@ -757,7 +742,7 @@ footer nav ul {
 .custom-dialog-actions {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
 }
 
 .custom-dialog-btn {
@@ -772,12 +757,12 @@ footer nav ul {
 
 .custom-dialog-btn.confirm-yes,
 .custom-dialog-btn:not(.confirm-no) {
-    background-color: #1D6154;
+    background-color: #1d6154;
     color: white;
 }
 
 .custom-dialog-btn.confirm-no {
     background-color: #fff;
-    color: #1D6154;
-    border: 1px solid #1D6154;
+    color: #1d6154;
+    border: 2px solid #1d6154;
 }
