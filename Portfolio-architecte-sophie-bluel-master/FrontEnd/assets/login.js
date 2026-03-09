@@ -1,30 +1,28 @@
 import { customAlert } from './utils.js';
 
-// Récupération du formulaire
+// Récupération des éléments du DOM
 const form = document.getElementById('login-form');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const submitBtn = document.getElementById('login-btn');
 
-// 2. On écoute quand on clique sur "Se connecter"
-form.addEventListener('submit', async function (event) {
-  // On empêche la page de se recharger
+// Fonction principale
+async function handleLogin(event) {
   event.preventDefault();
 
-  // 3. On récupère ce que l'utilisateur a écrit
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const submitBtn = document.getElementById('login-btn');
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
 
   if (!email || !password) {
     customAlert('Veuillez remplir tous les champs');
     return;
   }
 
-  // 4. On prépare le paquet à envoyer à l'API
-
   const user = { email, password };
 
   try {
     submitBtn.disabled = true;
-    // 5. On envoie la demande au serveur (POST)
+
     const response = await fetch('http://localhost:5678/api/users/login', {
       method: 'POST',
       headers: {
@@ -36,11 +34,16 @@ form.addEventListener('submit', async function (event) {
     if (!response.ok) {
       throw new Error('Email ou mot de passe incorrect');
     }
+
     const data = await response.json();
+
     localStorage.setItem('token', data.token);
     window.location.replace('index.html');
   } catch (error) {
     customAlert(error.message);
     submitBtn.disabled = false;
   }
-});
+}
+
+// Écoute du formulaire
+form.addEventListener('submit', handleLogin);
