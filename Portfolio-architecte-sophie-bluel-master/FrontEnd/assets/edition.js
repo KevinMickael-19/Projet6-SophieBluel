@@ -7,13 +7,12 @@ import { works } from './script.js';
 const token = localStorage.getItem('token');
 
 // Sélecteurs DOM réutilisés dans plusieurs fonctions
-const modal = document.querySelector('#modal');
+const modal = document.getElementById('modal');
 const modalGallery = document.querySelector('.modal-gallery');
 const btnAddPhoto = document.querySelector('.btn-add-photo');
 const arrowReturn = document.querySelector('.modal-icon-back');
 const galleryView = document.getElementById('modal-gallery-view');
 const addPhotoView = document.getElementById('modal-add-view');
-const modalOverlay = document.getElementById('modal');
 
 // =========================================================================
 // 2. FONCTIONS DE GESTION DE LA MODALE ET DE L'INTERFACE
@@ -305,9 +304,9 @@ function init() {
   if (arrowReturn) arrowReturn.addEventListener('click', openGalleryView);
 
   // Gestion de la fermeture au clic sur l'arrière-plan
-  if (modalOverlay) {
-    modalOverlay.addEventListener('click', (event) => {
-      if (event.target === modalOverlay) closeModalHandler();
+  if (modal) {
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModalHandler();
     });
   }
 
