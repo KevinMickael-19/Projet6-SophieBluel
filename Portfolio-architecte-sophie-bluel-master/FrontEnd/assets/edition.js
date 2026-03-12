@@ -27,12 +27,10 @@ export function genererGalerieModale(liste) {
   liste.forEach((projet) => {
     const figure = document.createElement('figure');
     figure.dataset.id = projet.id;
-    figure.style.position = 'relative';
 
     const image = document.createElement('img');
     image.src = projet.imageUrl;
     image.alt = projet.title;
-    image.style.width = '78px';
 
     const deleteBtn = document.createElement('button');
     deleteBtn.classList.add('delete-btn');
@@ -162,7 +160,6 @@ function resetImageInput() {
 
 function resetAddPhotoForm() {
   const form = document.getElementById('add-photo-form');
-  const removeBtn = document.getElementById('remove-photo-btn');
   const errorImage = document.getElementById('error-image');
   const errorTitle = document.getElementById('error-title');
   const errorCategory = document.getElementById('error-category');
@@ -170,10 +167,6 @@ function resetAddPhotoForm() {
   if (form) form.reset();
 
   resetImageInput();
-
-  if (removeBtn) {
-    removeBtn.style.display = 'none';
-  }
 
   if (errorImage) errorImage.textContent = '';
   if (errorTitle) errorTitle.textContent = '';
@@ -234,9 +227,8 @@ async function processUpload() {
     event.preventDefault();
 
     const formData = new FormData(form);
-    const currentToken = localStorage.getItem('token');
 
-    if (!currentToken) {
+    if (!token) {
       customAlert('Authentification requise');
       return;
     }
@@ -244,7 +236,7 @@ async function processUpload() {
     try {
       const response = await fetch('http://localhost:5678/api/works', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${currentToken}` },
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
@@ -373,15 +365,13 @@ function init() {
         );
         if (!confirmation) return;
 
-        const currentToken = localStorage.getItem('token');
-
         try {
           const response = await fetch(
             `http://localhost:5678/api/works/${id}`,
             {
               method: 'DELETE',
               headers: {
-                Authorization: `Bearer ${currentToken}`,
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
               },
             }

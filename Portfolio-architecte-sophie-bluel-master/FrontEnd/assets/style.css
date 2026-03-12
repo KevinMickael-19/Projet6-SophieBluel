@@ -448,7 +448,7 @@ footer nav ul {
 }
 
 .modal-gallery img {
-    width: 100%;
+    width: 78px;
     height: 100%;
     object-fit: cover;
 }
@@ -568,6 +568,7 @@ footer nav ul {
 
 #preview-img.preview-visible {
     display: block;
+    background-color: #e8f1f6;
 }
 
 /* Inputs Standards */
