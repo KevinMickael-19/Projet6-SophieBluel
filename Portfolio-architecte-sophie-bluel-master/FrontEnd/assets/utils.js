@@ -78,3 +78,15 @@ export function showNotification(message, isError = false) {
     notif.classList.remove('show');
   }, 3000);
 }
+
+// =========================================================================
+// GESTION DE L'AUTHENTIFICATION
+// =========================================================================
+
+export function getToken() {
+  return localStorage.getItem('token');
+}
+
+export function isAuthenticated() {
+  return !!getToken();
+}

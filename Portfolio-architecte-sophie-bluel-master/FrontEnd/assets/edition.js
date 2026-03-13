@@ -1,10 +1,14 @@
 // =========================================================================
 // 1. IMPORTS ET VARIABLES GLOBALES DU FICHIER
 // =========================================================================
-import { customAlert, customConfirm, showNotification } from './utils.js';
+import {
+  customAlert,
+  customConfirm,
+  showNotification,
+  isAuthenticated,
+  getToken,
+} from './utils.js';
 import { works } from './script.js';
-
-const token = localStorage.getItem('token');
 
 // Sélecteurs DOM réutilisés dans plusieurs fonctions
 const modal = document.getElementById('modal');
@@ -116,7 +120,7 @@ function initPhotoPreview() {
     if (!file) return;
 
     if (file.size > MAX_SIZE) {
-      alert('Fichier trop volumineux (max 4Mo)');
+      customAlert('Fichier trop volumineux (max 4Mo)');
       fileInput.value = '';
       replaceMessage.textContent = '';
       return;
@@ -228,7 +232,7 @@ async function processUpload() {
 
     const formData = new FormData(form);
 
-    if (!token) {
+    if (!isAuthenticated()) {
       customAlert('Authentification requise');
       return;
     }
@@ -236,17 +240,14 @@ async function processUpload() {
     try {
       const response = await fetch('http://localhost:5678/api/works', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${getToken()}` },
         body: formData,
       });
 
       if (response.ok) {
         showNotification('Projet ajouté avec succès');
         const newWork = await response.json();
-
-        if (typeof works !== 'undefined') {
-          works.push(newWork);
-        }
+        works.push(newWork);
 
         const mainGallery = document.querySelector('.gallery');
         if (mainGallery) {
@@ -265,10 +266,7 @@ async function processUpload() {
         }
 
         genererGalerieModale(works);
-
-        if (typeof resetAddPhotoForm === 'function') {
-          resetAddPhotoForm();
-        }
+        resetAddPhotoForm();
       } else {
         showNotification("Erreur lors de l'envoi du formulaire", true);
       }
@@ -312,7 +310,7 @@ function init() {
   });
 
   // Logique d'affichage si l'utilisateur est connecté (mode édition)
-  if (token) {
+  if (getToken()) {
     const topBar = document.createElement('div');
     topBar.classList.add('edition-mode-banner');
     topBar.innerHTML =
@@ -371,7 +369,7 @@ function init() {
             {
               method: 'DELETE',
               headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${getToken()}`,
                 'Content-Type': 'application/json',
               },
             }
