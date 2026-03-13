@@ -20,13 +20,13 @@ async function getWorks() {
 
 // Affiche les travaux dans la galerie
 
-function genererGallery(works) {
+function genererGallery(liste) {
   const sectionGallery = document.querySelector('.gallery');
   sectionGallery.innerHTML = '';
 
   const fragment = document.createDocumentFragment();
 
-  works.forEach((work) => {
+  liste.forEach((work) => {
     const figure = document.createElement('figure');
     figure.dataset.id = work.id;
     const img = document.createElement('img');
@@ -89,7 +89,7 @@ function genererBoutons(categories) {
       // Gestion de la classe active
       document
         .querySelectorAll('.filters button')
-        .forEach((btn) => btn.classList.remove('active'));
+        .forEach((filterBtn) => filterBtn.classList.remove('active'));
       btn.classList.add('active');
     });
   });
