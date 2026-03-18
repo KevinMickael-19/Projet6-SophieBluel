@@ -65,7 +65,10 @@ function resetModalState() {
 }
 
 function closeModalHandler() {
-  if (modal) modal.classList.remove('modal-show');
+  if (modal) {
+    modal.classList.remove('modal-show');
+    modal.setAttribute('inert', '');
+  }
   resetModalState();
 }
 
@@ -315,7 +318,7 @@ function init() {
         window.location.reload();
       });
     }
-
+    // Masquage des filtres
     const filters = document.querySelector('.filters');
     if (filters) filters.classList.add('hidden');
 
@@ -331,6 +334,7 @@ function init() {
       editLink.addEventListener('click', (event) => {
         event.preventDefault();
         modal.classList.add('modal-show');
+        modal.removeAttribute('inert');
         genererGalerieModale(works);
       });
     }
