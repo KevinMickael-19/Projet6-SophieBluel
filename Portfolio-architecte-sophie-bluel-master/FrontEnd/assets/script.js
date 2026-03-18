@@ -2,7 +2,8 @@
 const API_BASE_URL = 'http://localhost:5678/api';
 // Variable globale pour stocker les travaux
 export let works = [];
-
+export let categories;
+import { fillCategorySelect } from './edition.js';
 // Récupération des travaux depuis l'API et lancement de l'affichage
 async function getWorks() {
   try {
@@ -49,8 +50,9 @@ async function getCategories() {
       throw new Error('Erreur API categories');
     }
 
-    const categories = await reponse.json();
+    categories = await reponse.json();
     genererBoutons(categories);
+    fillCategorySelect(categories);
   } catch (error) {
     //eslint-disable-next-line no-console
     console.error('Erreur lors du chargement des projets :', error);

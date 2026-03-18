@@ -73,32 +73,19 @@ function closeModalHandler() {
 // 3. FONCTIONS DU FORMULAIRE ET DE PRÉVISUALISATION
 // =========================================================================
 
-async function fillCategorySelect() {
+export function fillCategorySelect(categories) {
   const selectElement = document.getElementById('category');
   if (!selectElement) return;
 
-  try {
-    const response = await fetch('http://localhost:5678/api/categories');
+  selectElement.innerHTML =
+    '<option value="" disabled selected>Choisissez une catégorie</option>';
 
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP: ${response.status}`);
-    }
+  const fragment = document.createDocumentFragment();
+  categories.forEach((category) => {
+    fragment.appendChild(new Option(category.name, category.id));
+  });
 
-    const categories = await response.json();
-
-    selectElement.innerHTML =
-      '<option value="" disabled selected>Choisissez une catégorie</option>';
-
-    const fragment = document.createDocumentFragment();
-    categories.forEach((category) => {
-      fragment.appendChild(new Option(category.name, category.id));
-    });
-
-    selectElement.appendChild(fragment);
-  } catch (error) {
-    //eslint-disable-next-line no-console
-    console.error("Échec de l'initialisation des catégories :", error);
-  }
+  selectElement.appendChild(fragment);
 }
 
 function initPhotoPreview() {
@@ -284,7 +271,6 @@ async function processUpload() {
 
 function init() {
   // Lancement des fonctions de base du formulaire
-  fillCategorySelect();
   initPhotoPreview();
   checkFormValidity();
   processUpload();
