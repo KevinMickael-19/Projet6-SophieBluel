@@ -39,8 +39,8 @@ async function handleLogin(event) {
 
     localStorage.setItem('token', data.token);
     window.location.replace('index.html');
-  } catch (error) {
-    customAlert(error.message);
+  } catch {
+    customAlert('Impossible de joindre le serveur');
     submitBtn.disabled = false;
   }
 }
