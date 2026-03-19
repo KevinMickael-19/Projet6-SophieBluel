@@ -1,3 +1,26 @@
+// =========================================================================
+// CONFIGURATION GLOBALE ET CONSTANTES
+// =========================================================================
+
+// Déclaration de l'URL de base
+export const API_BASE_URL = 'http://localhost:5678/api';
+
+// =========================================================================
+// GESTION DE L'AUTHENTIFICATION
+// =========================================================================
+
+export function getToken() {
+  return localStorage.getItem('token');
+}
+
+export function isAuthenticated() {
+  return !!getToken();
+}
+
+// =========================================================================
+// INTERFACE UTILISATEUR ET ALERTES
+// =========================================================================
+
 export function customAlert(message) {
   return new Promise((resolve) => {
     const overlay = document.createElement('div');
@@ -77,16 +100,4 @@ export function showNotification(message, isError = false) {
   setTimeout(() => {
     notif.classList.remove('show');
   }, 3000);
-}
-
-// =========================================================================
-// GESTION DE L'AUTHENTIFICATION
-// =========================================================================
-
-export function getToken() {
-  return localStorage.getItem('token');
-}
-
-export function isAuthenticated() {
-  return !!getToken();
 }

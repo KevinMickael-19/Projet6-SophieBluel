@@ -1,4 +1,4 @@
-import { customAlert } from './utils.js';
+import { customAlert, API_BASE_URL } from './utils.js';
 
 // Récupération des éléments du DOM
 const form = document.getElementById('login-form');
@@ -23,7 +23,7 @@ async function handleLogin(event) {
   try {
     submitBtn.disabled = true;
 
-    const response = await fetch('http://localhost:5678/api/users/login', {
+    const response = await fetch(`${API_BASE_URL}/users/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

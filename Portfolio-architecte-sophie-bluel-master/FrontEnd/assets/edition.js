@@ -7,7 +7,9 @@ import {
   showNotification,
   isAuthenticated,
   getToken,
+  API_BASE_URL,
 } from './utils.js';
+
 import { works } from './script.js';
 
 // Sélecteurs DOM réutilisés dans plusieurs fonctions
@@ -228,7 +230,7 @@ async function processUpload() {
     }
 
     try {
-      const response = await fetch('http://localhost:5678/api/works', {
+      const response = await fetch(`${API_BASE_URL}/works`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${getToken()}` },
         body: formData,
@@ -354,16 +356,13 @@ function init() {
         if (!confirmation) return;
 
         try {
-          const response = await fetch(
-            `http://localhost:5678/api/works/${id}`,
-            {
-              method: 'DELETE',
-              headers: {
-                Authorization: `Bearer ${getToken()}`,
-                'Content-Type': 'application/json',
-              },
-            }
-          );
+          const response = await fetch(`${API_BASE_URL}/works/${id}`, {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+              'Content-Type': 'application/json',
+            },
+          });
 
           if (response.ok) {
             showNotification('Projet supprimé avec succès');

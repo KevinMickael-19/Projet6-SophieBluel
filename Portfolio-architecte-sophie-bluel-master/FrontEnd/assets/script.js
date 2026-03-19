@@ -1,9 +1,12 @@
-// Déclaration de l'URL de base
-const API_BASE_URL = 'http://localhost:5678/api';
 // Variable globale pour stocker les travaux
 export let works = [];
+
 export let categories;
 import { fillCategorySelect } from './edition.js';
+
+// Déclaration de l'URL de base
+import { API_BASE_URL } from './utils.js';
+
 // Récupération des travaux depuis l'API et lancement de l'affichage
 async function getWorks() {
   try {
@@ -55,7 +58,7 @@ async function getCategories() {
     fillCategorySelect(categories);
   } catch (error) {
     //eslint-disable-next-line no-console
-    console.error('Erreur lors du chargement des projets :', error);
+    console.error('Erreur lors du chargement des catégories :', error);
   }
 }
 
