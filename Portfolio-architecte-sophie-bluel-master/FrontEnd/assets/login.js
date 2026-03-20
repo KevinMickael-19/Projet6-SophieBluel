@@ -39,8 +39,12 @@ async function handleLogin(event) {
 
     localStorage.setItem('token', data.token);
     window.location.replace('index.html');
-  } catch {
-    customAlert('Impossible de joindre le serveur');
+  } catch (error) {
+    const message =
+      error.message === 'Email ou mot de passe incorrect'
+        ? error.message
+        : 'Impossible de joindre le serveur';
+    customAlert(message);
     submitBtn.disabled = false;
   }
 }

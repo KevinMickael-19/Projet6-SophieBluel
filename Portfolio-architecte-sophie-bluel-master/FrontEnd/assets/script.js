@@ -12,7 +12,7 @@ async function getWorks() {
   try {
     const reponse = await fetch(`${API_BASE_URL}/works`);
     if (!reponse.ok) {
-      throw new Error(`${API_BASE_URL}/works`);
+      throw new Error(`${reponse.status}`);
     }
     works = await reponse.json();
     genererGallery(works); // On lance l'affichage
@@ -100,5 +100,5 @@ function genererBoutons(categories) {
   });
 }
 
-getCategories();
 getWorks();
+getCategories();
